@@ -1,0 +1,55 @@
+@model IEnumerable<Inquilino>;
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - My Application</title>
+
+    <!-- Incluir Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+
+@if (TempData["mensaje"] != null)
+{
+    <div class="alert alert-success">@TempData["mensaje"]</div>
+}
+<div>
+    <h3 class="display-4">Agregados recientemente</h3>
+    <h4><a asp-action="Editar" class="btn btn-success">Crear Nuevo Inquilino</a></h4>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Email</th>
+                <th>DNI</th>
+                <th>Teléfono</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Nombre</td>
+                    <td>@item.Apellido</td>
+                    <td>@item.Email</td>
+                    <td>@item.Dni</td>
+                    <td>@item.Telefono</td>
+                    <td>
+                        <a asp-action="Editar" asp-route-id="@item.id_inquilino" class="btn btn-primary">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
+                        <a asp-action="Eliminar" asp-route-id="@item.id_inquilino" class="btn btn-danger"
+                            onclick="return confirm('¿Está seguro que desea eliminar a @item.Nombre @item.Apellido?');">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
