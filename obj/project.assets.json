@@ -1791,11 +1791,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Bruno\\Desktop\\InmoCerutti2024\\InmoCerutti\\Inmobiliaria-Cerutti.csproj",
+      "projectUniqueName": "C:\\Users\\Bruno\\Desktop\\InmoCerutti2024\\Inmobiliaria-Cerutti.csproj",
       "projectName": "Inmobiliaria-Cerutti",
-      "projectPath": "C:\\Users\\Bruno\\Desktop\\InmoCerutti2024\\InmoCerutti\\Inmobiliaria-Cerutti.csproj",
+      "projectPath": "C:\\Users\\Bruno\\Desktop\\InmoCerutti2024\\Inmobiliaria-Cerutti.csproj",
       "packagesPath": "C:\\Users\\Bruno\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Bruno\\Desktop\\InmoCerutti2024\\InmoCerutti\\obj\\",
+      "outputPath": "C:\\Users\\Bruno\\Desktop\\InmoCerutti2024\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Bruno\\AppData\\Roaming\\NuGet\\NuGet.Config"

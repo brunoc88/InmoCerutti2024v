@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "eHqUFvPTvdSQuCA7kO1OmwUhkBgjATZVl/QOyxM5ROcrYg6RqBBu/AOMNrhlbNwKMvO2qBzbnNnjsCQV+PrI9A==",
+  "dgSpecHash": "RxapOyFVmjy9rKfWsP84mshq1bcaL/1cqADe9xK9rlZqF+0uj7kTC6PMQF8A2ZdTSci2oYaaXwV87951sUviuw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Bruno\\Desktop\\InmoCerutti2024\\InmoCerutti\\Inmobiliaria-Cerutti.csproj",
+  "projectFilePath": "C:\\Users\\Bruno\\Desktop\\InmoCerutti2024\\Inmobiliaria-Cerutti.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Bruno\\.nuget\\packages\\bouncycastle.cryptography\\2.2.1\\bouncycastle.cryptography.2.2.1.nupkg.sha512",
     "C:\\Users\\Bruno\\.nuget\\packages\\google.protobuf\\3.25.1\\google.protobuf.3.25.1.nupkg.sha512",
