@@ -9,33 +9,29 @@ public class RepositorioInquilino
     //guardar inquilino
     public void AltaInquilino(Inquilino inquilino)
     {
-        try
-        {
-            using (var conexion = new MySqlConnection(ConnectionString))
-            {
-                var sql = $"INSERT INTO inquilino ({nameof(Inquilino.Nombre)}, {nameof(Inquilino.Apellido)}, {nameof(Inquilino.Email)},{nameof(Inquilino.Dni)},{nameof(Inquilino.Telefono)}) " +
-                          $"VALUES (@{nameof(Inquilino.Nombre)}, @{nameof(Inquilino.Apellido)}, @{nameof(Inquilino.Email)}, @{nameof(Inquilino.Dni)},@{nameof(Inquilino.Telefono)})";
 
-                using (var comand = new MySqlCommand(sql, conexion))
-                {
-                    // Agregar los parámetros usando nameof para evitar errores tipográficos
-                    comand.Parameters.AddWithValue($"@{nameof(Inquilino.Nombre)}", inquilino.Nombre);
-                    comand.Parameters.AddWithValue($"@{nameof(Inquilino.Apellido)}", inquilino.Apellido);
-                    comand.Parameters.AddWithValue($"@{nameof(Inquilino.Email)}", inquilino.Email);
-                    comand.Parameters.AddWithValue($"@{nameof(Inquilino.Dni)}",inquilino.Dni);
-                    comand.Parameters.AddWithValue($"@{nameof(Inquilino.Telefono)}",inquilino.Telefono);
-                    
-                    conexion.Open();
-                    comand.ExecuteNonQuery();
-                }
+
+        using (var conexion = new MySqlConnection(ConnectionString))
+        {
+            var sql = $"INSERT INTO inquilino ({nameof(Inquilino.Nombre)}, {nameof(Inquilino.Apellido)}, {nameof(Inquilino.Email)},{nameof(Inquilino.Dni)},{nameof(Inquilino.Telefono)}) " +
+                      $"VALUES (@{nameof(Inquilino.Nombre)}, @{nameof(Inquilino.Apellido)}, @{nameof(Inquilino.Email)}, @{nameof(Inquilino.Dni)},@{nameof(Inquilino.Telefono)})";
+
+            using (var comand = new MySqlCommand(sql, conexion))
+            {
+                // Agregar los parámetros usando nameof para evitar errores tipográficos
+                comand.Parameters.AddWithValue($"@{nameof(Inquilino.Nombre)}", inquilino.Nombre);
+                comand.Parameters.AddWithValue($"@{nameof(Inquilino.Apellido)}", inquilino.Apellido);
+                comand.Parameters.AddWithValue($"@{nameof(Inquilino.Email)}", inquilino.Email);
+                comand.Parameters.AddWithValue($"@{nameof(Inquilino.Dni)}", inquilino.Dni);
+                comand.Parameters.AddWithValue($"@{nameof(Inquilino.Telefono)}", inquilino.Telefono);
+
+                conexion.Open();
+                comand.ExecuteNonQuery();
             }
         }
-        catch (Exception ex)
-        {
-            // Manejo de excepciones
-            Console.WriteLine("Ocurrió un error: " + ex.Message);
-        }
     }
+
+
 
 
     public List<Inquilino> GetInquilinos()
@@ -108,7 +104,7 @@ public class RepositorioInquilino
             }
         }
 
-        return inquilino; 
+        return inquilino;
     }
 
     // modificar inquilino

@@ -8,8 +8,7 @@ public class RepositorioPropietario
     //guardar inquilino
     public void AltaPropietario(Propietario propietario)
     {
-        try
-        {
+        
             using (var conexion = new MySqlConnection(ConnectionString))
             {
                 var sql = $"INSERT INTO propietario ({nameof(Propietario.Nombre)}, {nameof(Propietario.Apellido)}, {nameof(Propietario.Email)},{nameof(Propietario.Dni)},{nameof(Propietario.Telefono)}) " +
@@ -28,12 +27,8 @@ public class RepositorioPropietario
                     comand.ExecuteNonQuery();
                 }
             }
-        }
-        catch (Exception ex)
-        {
-            // Manejo de excepciones
-            Console.WriteLine("Ocurrió un error: " + ex.Message);
-        }
+        
+       
     }
 
 

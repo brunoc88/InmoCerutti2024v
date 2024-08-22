@@ -9,9 +9,26 @@
     
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
+
+@if (TempData["mensaje"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["mensaje"]
+    </div>
+}
+
+@if (TempData["error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["error"]
+    </div>
+}
+
 <div>
-    <h3 class="display-4">Agregados recientemente</h3>
-    <h4><a asp-action="Editar" class="btn btn-success">Crear Nuevo Propietario</a></h4>
+    <h2>Agregados recientemente</h2>
+     <a asp-action="Editar" class="btn btn-success">
+        <i class="fas fa-plus"></i> Agregar Propietario
+    </a>
 
     <table class="table table-bordered">
         <thead>

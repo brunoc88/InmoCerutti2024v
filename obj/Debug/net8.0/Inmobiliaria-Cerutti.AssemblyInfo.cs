@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Inmobiliaria-Cerutti")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a6d866d71f108cdb2330ac23fcf2226d6b9ae0d0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+29048e9373a01b63ccaf10433ae33415d2dbd960")]
 [assembly: System.Reflection.AssemblyProductAttribute("Inmobiliaria-Cerutti")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Inmobiliaria-Cerutti")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

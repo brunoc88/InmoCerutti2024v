@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 20-08-2024 a las 20:54:36
+-- Tiempo de generación: 22-08-2024 a las 22:31:49
 -- Versión del servidor: 10.4.25-MariaDB
 -- Versión de PHP: 8.1.10
 
@@ -41,8 +41,8 @@ CREATE TABLE `inquilino` (
 --
 
 INSERT INTO `inquilino` (`id_inquilino`, `Nombre`, `Apellido`, `Dni`, `Email`, `Telefono`) VALUES
-(8, 'jose', 'gonzales', '2222', 'alfonpepe@gmail.com', '123213'),
-(9, 'bruno', 'cerutti', '1231231', 'bruno@gmail.com', '123213');
+(1, 'bruno', 'cerutti', '2222', 'bruno@gmail.com', '123213'),
+(8, 'alberto', 'alfonso', '1231231', 'alfon@gmail.com', '08000');
 
 -- --------------------------------------------------------
 
@@ -60,6 +60,14 @@ CREATE TABLE `propietario` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
+-- Volcado de datos para la tabla `propietario`
+--
+
+INSERT INTO `propietario` (`id_propietario`, `Nombre`, `Apellido`, `Dni`, `Email`, `telefono`) VALUES
+(1, 'bruno', 'cerutti', '1231231', 'bruno@gmail.com', '123213'),
+(6, 'tomas ', 'gonzales', '44444', 'gonzales@gmail.com', '123');
+
+--
 -- Índices para tablas volcadas
 --
 
@@ -69,7 +77,8 @@ CREATE TABLE `propietario` (
 ALTER TABLE `inquilino`
   ADD PRIMARY KEY (`id_inquilino`),
   ADD UNIQUE KEY `Dni` (`Dni`),
-  ADD UNIQUE KEY `Email` (`Email`,`Telefono`);
+  ADD UNIQUE KEY `Email` (`Email`),
+  ADD UNIQUE KEY `Telefono` (`Telefono`);
 
 --
 -- Indices de la tabla `propietario`
@@ -77,7 +86,8 @@ ALTER TABLE `inquilino`
 ALTER TABLE `propietario`
   ADD PRIMARY KEY (`id_propietario`),
   ADD UNIQUE KEY `Dni` (`Dni`),
-  ADD UNIQUE KEY `Email` (`Email`,`telefono`);
+  ADD UNIQUE KEY `Email` (`Email`),
+  ADD UNIQUE KEY `telefono` (`telefono`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -87,13 +97,13 @@ ALTER TABLE `propietario`
 -- AUTO_INCREMENT de la tabla `inquilino`
 --
 ALTER TABLE `inquilino`
-  MODIFY `id_inquilino` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_inquilino` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de la tabla `propietario`
 --
 ALTER TABLE `propietario`
-  MODIFY `id_propietario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_propietario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
