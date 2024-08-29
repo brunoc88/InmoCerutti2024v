@@ -30,9 +30,10 @@
         <i class="fas fa-plus"></i> Agregar Propietario
     </a>
 
-    <table class="table table-bordered">
+    <table class="table">
         <thead>
             <tr>
+                <th>#</th>
                 <th>Nombre</th>
                 <th>Apellido</th>
                 <th>Email</th>
@@ -45,6 +46,7 @@
             @foreach (var item in Model)
             {
                 <tr>
+                    <td>@item.id_propietario</td>
                     <td>@item.Nombre</td>
                     <td>@item.Apellido</td>
                     <td>@item.Email</td>

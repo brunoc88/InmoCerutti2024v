@@ -2,7 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Inmobiliaria_Cerutti.Models;
 
-namespace Inmobiliaria_Cerutti.Controllers;
+namespace Inmobiliaria_Cerutti.HomeControllerController;
 
 public class HomeController : Controller
 {
