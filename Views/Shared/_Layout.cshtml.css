@@ -46,3 +46,21 @@ button.accept-policy {
   white-space: nowrap;
   line-height: 60px;
 }
+
+.navbar-brand {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.nav-link {
+  font-size: 1.2rem;
+}
+
+.navbar .nav-link .fas {
+  margin-right: 8px;
+}
+
+.navbar {
+  background-color: #f8f9fa; /* Color de fondo */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra */
+}

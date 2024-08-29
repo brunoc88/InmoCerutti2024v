@@ -3,7 +3,7 @@ using MySql.Data.MySqlClient;
 
 public class RepositorioPropietario
 {
-    readonly string ConnectionString = "Server=localhost;Port=3306;Database=test;User=root;";
+    readonly string ConnectionString = "Server=localhost;Port=3306;Database=inmoCerutti;User=root;";
 
     //guardar inquilino
     public void AltaPropietario(Propietario propietario)
