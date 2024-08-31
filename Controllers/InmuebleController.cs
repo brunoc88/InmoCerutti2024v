@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Inmobiliaria_Cerutti.Models;
+using System.Linq.Expressions;
 
 namespace Inmobiliaria_Cerutti.InmuebleController;
 
@@ -41,16 +42,36 @@ public class InmuebleController : Controller
 
     public IActionResult guardar(Inmueble inmueble)
     {
-        var ri = new RepositorioInmueble();
-        ri.AltaInmueble(inmueble);
-        return RedirectToAction(nameof(Index));
+        try
+        {
+            var ri = new RepositorioInmueble();
+            ri.AltaInmueble(inmueble);
+            TempData["mensaje"] = "Inmueble agregado con exito!";
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception ex)
+        {
+            TempData["error"] = "Error: al inmueble ya está registrado.";
+            return RedirectToAction(nameof(Crear));
+        }
+
+
     }
 
     public IActionResult Eliminar(int id)
     {
-        var ri = new RepositorioInmueble();
-        ri.eliminarPropiedad(id);
-        return RedirectToAction(nameof(Index));
+        try
+        {
+            var ri = new RepositorioInmueble();
+            ri.eliminarPropiedad(id);
+            TempData["mensaje"] = "Inmueble Eliminado con exito!";
+            return RedirectToAction(nameof(Index));
+        }catch(Exception ex){
+            TempData["error"] = "Error: al eliminar el inmueble.";
+            return RedirectToAction(nameof(Index));
+        }
+
+
     }
 
     // GET: Inmueble/
@@ -59,7 +80,7 @@ public class InmuebleController : Controller
         var ri = new RepositorioInmueble();
         var inmueble = ri.GetInmueble(id);
         var rp = new RepositorioPropietario();
-        ViewBag.Propietarios = rp.GetPropietarios(); 
+        ViewBag.Propietarios = rp.GetPropietarios();
         return View(inmueble);
     }
     // POST: Inmueble/Edit/

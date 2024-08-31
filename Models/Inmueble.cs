@@ -20,16 +20,16 @@ public class Inmueble
 {
     public int id_inmueble { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "Debe ingresar una Direccion.")]
     public string Direccion { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "Debe Elegir el tipo de Uso.")]
     public UsoInmueble Uso { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "Debe Elegir el tipo de Inmueble.")]
     public TipoInmueble Tipo { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "Debe detallar la cantidad de ambientes.")]
     public int Ambientes { get; set; }
     [Required]
     [Range(-90, 90, ErrorMessage = "La latitud debe estar entre -90 y 90 grados.")]
@@ -39,11 +39,11 @@ public class Inmueble
     [Range(-180, 180, ErrorMessage = "La longitud debe estar entre -180 y 180 grados.")]
     public decimal? Longitud { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "Debe Ingresar el precio.")]
     [DataType(DataType.Currency)]
     public decimal Precio { get; set; }
 
-    [Required] // Asegura que el propietario siempre esté asociado
+    [Required(ErrorMessage = "Debe Elegir el Propietario")] // Asegura que el propietario siempre esté asociado
     [Display(Name = "Dueño")]
     public int? id_propietario { get; set; }
 
