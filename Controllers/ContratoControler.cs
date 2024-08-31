@@ -1,7 +1,8 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Inmobiliaria_Cerutti.Models;
 using Org.BouncyCastle.Asn1.Pkcs;
+using MySql.Data.MySqlClient;
+using Mysqlx;
 
 namespace Inmobiliaria_Cerutti.ContratoController;
 
@@ -29,14 +30,22 @@ public class ContratoController : Controller
     }
 
     [HttpPost]
-    public IActionResult Listado(Filtro filtro)
+   public IActionResult Listado(Filtro filtro)
+{
+    var rc = new RepositorioContrato();
+    var inmuebles = rc.GetInmueblesDisponibles(filtro);
+    
+    if (inmuebles != null && inmuebles.Count > 0)
     {
-        var rc = new RepositorioContrato();
-        var inmuebles = rc.getInmublesDisponibles(filtro);
-        // Pasar la lista de inmuebles a la vista o hacer algo con ella
         return View(inmuebles);
-
     }
+    else
+    {
+        TempData["error"] = "Error: No se encontraron inmublemes!.";
+        return RedirectToAction(nameof(Buscar));
+    }
+}
+
 
     public IActionResult alta(int id)
     {

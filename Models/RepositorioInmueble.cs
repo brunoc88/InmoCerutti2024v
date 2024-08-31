@@ -6,60 +6,64 @@ public class RepositorioInmueble
     readonly string ConnectionString = "Server=localhost;Port=3306;Database=inmoCerutti;User=root;";
 
 
-    public List<Inmueble> GetInmuebles()
+ public List<Inmueble> GetInmuebles()
+{
+    List<Inmueble> lista = new List<Inmueble>();
+
+    using (var connection = new MySqlConnection(ConnectionString))
     {
-        List<Inmueble> lista = new List<Inmueble>();
+        var sql = $@"
+            SELECT 
+                i.{nameof(Inmueble.id_inmueble)},
+                i.{nameof(Inmueble.Direccion)},
+                i.{nameof(Inmueble.Ambientes)},
+                i.{nameof(Inmueble.Precio)},
+                i.{nameof(Inmueble.Longitud)},
+                i.{nameof(Inmueble.Latitud)},
+                i.{nameof(Inmueble.id_propietario)},
+                p.{nameof(Propietario.Nombre)},
+                p.{nameof(Propietario.Apellido)},
+                p.{nameof(Propietario.Dni)},
+                p.{nameof(Propietario.Email)},
+                p.{nameof(Propietario.Telefono)}
+            FROM inmueble i 
+            INNER JOIN propietario p 
+            ON i.{nameof(Inmueble.id_propietario)} = p.{nameof(Propietario.id_propietario)}
+            WHERE i.Estado = 1";
 
-        using (var connection = new MySqlConnection(ConnectionString))
+        using (var command = new MySqlCommand(sql, connection))
         {
-            var sql = $@"SELECT i.{nameof(Inmueble.id_inmueble)},
-                            i.{nameof(Inmueble.Direccion)},
-                            i.{nameof(Inmueble.Ambientes)},
-                            i.{nameof(Inmueble.Precio)},
-                            i.{nameof(Inmueble.Longitud)},
-                            i.{nameof(Inmueble.Latitud)},
-                            i.{nameof(Inmueble.id_propietario)},
-                            p.{nameof(Propietario.Nombre)},
-                            p.{nameof(Propietario.Apellido)},
-                            p.{nameof(Propietario.Dni)},
-                            p.{nameof(Propietario.Email)},
-                            p.{nameof(Propietario.Telefono)}
-                     FROM inmueble i 
-                     INNER JOIN propietario p 
-                     ON i.{nameof(Inmueble.id_propietario)} = p.{nameof(Propietario.id_propietario)}";
-
-            using (var command = new MySqlCommand(sql, connection))
+            connection.Open();
+            using (var reader = command.ExecuteReader())
             {
-                connection.Open();
-                using (var reader = command.ExecuteReader())
+                while (reader.Read())
                 {
-                    while (reader.Read())
+                    lista.Add(new Inmueble
                     {
-                        lista.Add(new Inmueble
+                        id_inmueble = reader.GetInt32(nameof(Inmueble.id_inmueble)),
+                        Direccion = reader[nameof(Inmueble.Direccion)] == DBNull.Value ? string.Empty : reader.GetString(nameof(Inmueble.Direccion)),
+                        Ambientes = reader.GetInt32(nameof(Inmueble.Ambientes)),
+                        Precio = reader.GetDecimal(nameof(Inmueble.Precio)),
+                        Longitud = reader.GetDecimal(nameof(Inmueble.Longitud)),
+                        Latitud = reader.GetDecimal(nameof(Inmueble.Latitud)),
+                        id_propietario = reader.GetInt32(nameof(Inmueble.id_propietario)),
+                        duenio = new Propietario
                         {
-                            id_inmueble = reader.GetInt32(nameof(Inmueble.id_inmueble)),
-                            Direccion = reader[nameof(Inmueble.Direccion)] == DBNull.Value ? string.Empty : reader.GetString(nameof(Inmueble.Direccion)),
-                            Ambientes = reader.GetInt32(nameof(Inmueble.Ambientes)),
-                            Precio = reader.GetDecimal(nameof(Inmueble.Precio)),
-                            Longitud = reader.GetDecimal(nameof(Inmueble.Longitud)),
-                            Latitud = reader.GetDecimal(nameof(Inmueble.Latitud)),
-                            id_propietario = reader.GetInt32(nameof(Inmueble.id_propietario)),
-                            duenio = new Propietario
-                            {
-                                id_propietario = reader.GetInt32(nameof(Propietario.id_propietario)),
-                                Nombre = reader[nameof(Propietario.Nombre)] == DBNull.Value ? string.Empty : reader.GetString(nameof(Propietario.Nombre)),
-                                Apellido = reader[nameof(Propietario.Apellido)] == DBNull.Value ? string.Empty : reader.GetString(nameof(Propietario.Apellido)),
-                                Dni = reader[nameof(Propietario.Dni)] == DBNull.Value ? string.Empty : reader.GetString(nameof(Propietario.Dni)),
-                                Email = reader[nameof(Propietario.Email)] == DBNull.Value ? string.Empty : reader.GetString(nameof(Propietario.Email)),
-                                Telefono = reader[nameof(Propietario.Telefono)] == DBNull.Value ? string.Empty : reader.GetString(nameof(Propietario.Telefono))
-                            }
-                        });
-                    }
+                            id_propietario = reader.GetInt32(nameof(Propietario.id_propietario)),
+                            Nombre = reader[nameof(Propietario.Nombre)] == DBNull.Value ? string.Empty : reader.GetString(nameof(Propietario.Nombre)),
+                            Apellido = reader[nameof(Propietario.Apellido)] == DBNull.Value ? string.Empty : reader.GetString(nameof(Propietario.Apellido)),
+                            Dni = reader[nameof(Propietario.Dni)] == DBNull.Value ? string.Empty : reader.GetString(nameof(Propietario.Dni)),
+                            Email = reader[nameof(Propietario.Email)] == DBNull.Value ? string.Empty : reader.GetString(nameof(Propietario.Email)),
+                            Telefono = reader[nameof(Propietario.Telefono)] == DBNull.Value ? string.Empty : reader.GetString(nameof(Propietario.Telefono))
+                        }
+                    });
                 }
             }
         }
-        return lista;
     }
+    return lista;
+}
+
 
 
     public void AltaInmueble(Inmueble inmueble)
@@ -83,7 +87,7 @@ public class RepositorioInmueble
             }
         }
     }
-
+/*
     public void eliminarPropiedad(int id)
     {
         using (var connection = new MySqlConnection(ConnectionString))
@@ -98,7 +102,7 @@ public class RepositorioInmueble
             }
         }
     }
-
+*/
    public void EditarInmueble(Inmueble inmueble)
 {
     using (var connection = new MySqlConnection(ConnectionString))
@@ -177,6 +181,23 @@ public Inmueble GetInmueble(int id_inmueble)
 }
 
 
+public void eliminarPropiedad(int id_inmueble)
+    {
+        using (var conexion = new MySqlConnection(ConnectionString))
+        {
+            var sql = @$"UPDATE inmueble
+            SET {nameof(Inmueble.estado)} = @{nameof(Inmueble.estado)}
+            WHERE 
+                {nameof(Inmueble.id_inmueble)} = @{nameof(Inmueble.id_inmueble)}";
+            using (var comand = new MySqlCommand(sql, conexion))
+            {
+                conexion.Open();
+                comand.Parameters.AddWithValue($"@{nameof(Inmueble.id_inmueble)}", id_inmueble);
+                comand.Parameters.AddWithValue($"@{nameof(Inmueble.estado)}", 0);
+                comand.ExecuteNonQuery();
+            }
+        }
+    }
 
 
 

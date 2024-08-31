@@ -14,5 +14,6 @@ public class Propietario
     public string? Email { get; set; }
     [Required(ErrorMessage = "El teléfono es obligatorio")]
     public string? Telefono { get; set; }
+    public bool estado {get;set;}
 
 }

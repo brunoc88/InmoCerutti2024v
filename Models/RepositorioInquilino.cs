@@ -48,7 +48,7 @@ public class RepositorioInquilino
                         {nameof(Inquilino.Dni)},
                         {nameof(Inquilino.Telefono)}
                        
-					FROM inquilino";
+					FROM inquilino WHERE Estado = 1";
             //tambien si quiere mostrar todo hago SELECT * FROM inquilino
             using (var comand = new MySqlCommand(sql, conexion))
             {
@@ -138,7 +138,7 @@ public class RepositorioInquilino
             }
         }
     }
-
+    /*
     //eliminar inquilino
     public void EliminarInquilino(int id_inquilino)
     {
@@ -153,7 +153,27 @@ public class RepositorioInquilino
                 comand.ExecuteNonQuery();
             }
         }
+    }*/
+
+    //borrado logico
+    public void EliminarInquilino(int id_inquilino)
+    {
+        using (var conexion = new MySqlConnection(ConnectionString))
+        {
+            var sql = @$"UPDATE inquilino
+            SET {nameof(Inquilino.estado)} = @{nameof(Inquilino.estado)}
+            WHERE 
+                {nameof(Inquilino.id_inquilino)} = @{nameof(Inquilino.id_inquilino)}";
+            using (var comand = new MySqlCommand(sql, conexion))
+            {
+                conexion.Open();
+                comand.Parameters.AddWithValue($"@{nameof(Inquilino.id_inquilino)}", id_inquilino);
+                comand.Parameters.AddWithValue($"@{nameof(Inquilino.estado)}", 0);
+                comand.ExecuteNonQuery();
+            }
+        }
     }
+
 
 
 }

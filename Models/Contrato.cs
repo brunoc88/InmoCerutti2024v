@@ -18,4 +18,5 @@ public class Contrato
     public DateTime FechaInicio { get; set; }
     [Required(ErrorMessage = "Debe Agregar Fecha de Finalizacion.")]
     public DateTime FechaFin { get; set; }
+    public bool estado {get;set;}
 }

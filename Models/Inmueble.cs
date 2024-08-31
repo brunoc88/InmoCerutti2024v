@@ -49,6 +49,7 @@ public class Inmueble
 
     [ForeignKey(nameof(id_propietario))]
     public Propietario? duenio { get; set; }
+    public bool estado {get;set;}
 }
 
 

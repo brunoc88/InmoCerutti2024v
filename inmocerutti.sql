@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 31-08-2024 a las 04:41:58
+-- Tiempo de generación: 01-09-2024 a las 00:09:23
 -- Versión del servidor: 10.4.25-MariaDB
 -- Versión de PHP: 8.1.10
 
@@ -33,16 +33,17 @@ CREATE TABLE `contrato` (
   `id_inquilino` int(11) NOT NULL,
   `precio` decimal(10,2) NOT NULL,
   `FechaInicio` datetime NOT NULL,
-  `FechaFin` datetime NOT NULL
+  `FechaFin` datetime NOT NULL,
+  `Estado` tinyint(1) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `contrato`
 --
 
-INSERT INTO `contrato` (`id_contrato`, `id_inmueble`, `id_inquilino`, `precio`, `FechaInicio`, `FechaFin`) VALUES
-(7, 4, 1, '15000.00', '2024-08-30 00:00:00', '2024-09-07 00:00:00'),
-(8, 9, 19, '22222.00', '2024-09-05 00:00:00', '2025-01-10 00:00:00');
+INSERT INTO `contrato` (`id_contrato`, `id_inmueble`, `id_inquilino`, `precio`, `FechaInicio`, `FechaFin`, `Estado`) VALUES
+(10, 4, 19, '3333.00', '2024-09-03 00:00:00', '2024-09-04 00:00:00', 1),
+(11, 9, 19, '0.00', '0001-01-01 00:00:00', '0001-01-01 00:00:00', 0);
 
 -- --------------------------------------------------------
 
@@ -59,17 +60,17 @@ CREATE TABLE `inmueble` (
   `Latitud` decimal(9,6) NOT NULL,
   `Longitud` decimal(9,6) NOT NULL,
   `Precio` decimal(18,2) NOT NULL,
-  `id_propietario` int(11) NOT NULL
+  `id_propietario` int(11) NOT NULL,
+  `Estado` tinyint(1) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `inmueble`
 --
 
-INSERT INTO `inmueble` (`id_inmueble`, `Direccion`, `Uso`, `Tipo`, `Ambientes`, `Latitud`, `Longitud`, `Precio`, `id_propietario`) VALUES
-(4, 'lamadrid', 'Comercial', 'Local', 3, '45.000000', '33.000000', '2000.00', 1),
-(6, 'Chacabuco 828', 'Comercial', 'Local', 3, '33.000000', '33.000000', '2000.00', 10),
-(9, 'Entre rio 222', 'Comercial', 'Local', 2, '45.000000', '33.000000', '22222.00', 1);
+INSERT INTO `inmueble` (`id_inmueble`, `Direccion`, `Uso`, `Tipo`, `Ambientes`, `Latitud`, `Longitud`, `Precio`, `id_propietario`, `Estado`) VALUES
+(4, 'lamadrid 44', 'Comercial', 'Local', 3, '45.000000', '33.000000', '2000.00', 1, 0),
+(9, 'Entre rio 222', 'Comercial', 'Local', 2, '45.000000', '33.000000', '22222.00', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -83,16 +84,19 @@ CREATE TABLE `inquilino` (
   `Apellido` varchar(100) NOT NULL,
   `Dni` varchar(20) NOT NULL,
   `Email` varchar(100) NOT NULL,
-  `Telefono` varchar(15) NOT NULL
+  `Telefono` varchar(15) NOT NULL,
+  `Estado` tinyint(1) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `inquilino`
 --
 
-INSERT INTO `inquilino` (`id_inquilino`, `Nombre`, `Apellido`, `Dni`, `Email`, `Telefono`) VALUES
-(1, 'Alberto', 'cerutti', '3333', 'bruno@gmail.com', '123213'),
-(19, 'Juan Francisco', 'García Flores', '555', 'ejemplo@ejemplo.mx', '5553428400');
+INSERT INTO `inquilino` (`id_inquilino`, `Nombre`, `Apellido`, `Dni`, `Email`, `Telefono`, `Estado`) VALUES
+(1, 'Alberto', 'cerutti', '3333', 'bruno@gmail.com', '123213', 0),
+(19, 'Juan Francisco', 'García Flores', '555', 'ejemplo@ejemplo.mx', '5553428400', 1),
+(21, 'tomas ', 'shelby', '33333', 's@gmail.com', '123456', 1),
+(22, 'pepe', 'Gomez', '1231231', 'alfonpepe@gmail.com', '08000', 1);
 
 -- --------------------------------------------------------
 
@@ -106,16 +110,17 @@ CREATE TABLE `propietario` (
   `Apellido` varchar(100) NOT NULL,
   `Dni` varchar(50) NOT NULL,
   `Email` varchar(50) NOT NULL,
-  `telefono` varchar(20) NOT NULL
+  `telefono` varchar(20) NOT NULL,
+  `Estado` tinyint(1) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `propietario`
 --
 
-INSERT INTO `propietario` (`id_propietario`, `Nombre`, `Apellido`, `Dni`, `Email`, `telefono`) VALUES
-(1, 'Alberto', 'cerutti', '1231231', 'bruno@gmail.com', '123213'),
-(10, 'Gottfried', 'Leibniz', '22222222', 'test@beispiel.de', '030303986300');
+INSERT INTO `propietario` (`id_propietario`, `Nombre`, `Apellido`, `Dni`, `Email`, `telefono`, `Estado`) VALUES
+(1, 'Alberto', 'cerutti', '1231231', 'bruno@gmail.com', '123213', 1),
+(10, 'Gottfried', 'Leibniz', '22222222', 'test@beispiel.de', '030303986300', 0);
 
 --
 -- Índices para tablas volcadas
@@ -162,7 +167,7 @@ ALTER TABLE `propietario`
 -- AUTO_INCREMENT de la tabla `contrato`
 --
 ALTER TABLE `contrato`
-  MODIFY `id_contrato` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_contrato` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `inmueble`
@@ -174,7 +179,7 @@ ALTER TABLE `inmueble`
 -- AUTO_INCREMENT de la tabla `inquilino`
 --
 ALTER TABLE `inquilino`
-  MODIFY `id_inquilino` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id_inquilino` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT de la tabla `propietario`

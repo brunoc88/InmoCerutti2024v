@@ -5,55 +5,57 @@ public class RepositorioContrato
 {
     readonly string ConnectionString = "Server=localhost;Port=3306;Database=inmoCerutti;User=root;";
 
-    public List<Inmueble> getInmublesDisponibles(Filtro filtro)
+public List<Inmueble> GetInmueblesDisponibles(Filtro filtro)
+{
+    var inmuebles = new List<Inmueble>();
+
+    using (var connection = new MySqlConnection(ConnectionString))
     {
-        var inmuebles = new List<Inmueble>();
+        var sql = @"
+            SELECT i.*
+            FROM inmueble i
+            LEFT JOIN contrato c ON i.id_inmueble = c.id_inmueble
+            WHERE i.Precio BETWEEN @PrecioMin AND @PrecioMax
+            AND i.Uso = @Uso
+            AND i.Tipo = @Tipo
+            AND i.Estado = 1
+            AND (c.id_inmueble IS NULL OR c.FechaFin < @FechaInicio OR c.FechaInicio > @FechaFin OR c.Estado = 0)";
 
-        using (var connection = new MySqlConnection(ConnectionString))
+        using (var command = new MySqlCommand(sql, connection))
         {
-            var sql = @"
-                SELECT i.*
-                FROM inmueble i
-                LEFT JOIN contrato c ON i.id_inmueble = c.id_inmueble
-                WHERE i.Precio BETWEEN @PrecioMin AND @PrecioMax
-                AND i.Uso = @Uso
-                AND i.Tipo = @Tipo
-                AND (c.FechaFin < @FechaInicio OR c.FechaInicio > @FechaFin OR c.id_inmueble IS NULL)";
+            command.Parameters.AddWithValue("@PrecioMin", filtro.PrecioMin ?? 0);
+            command.Parameters.AddWithValue("@PrecioMax", filtro.PrecioMax ?? decimal.MaxValue);
+            command.Parameters.AddWithValue("@Uso", filtro.Uso ?? string.Empty);
+            command.Parameters.AddWithValue("@Tipo", filtro.Tipo ?? string.Empty);
+            command.Parameters.AddWithValue("@FechaInicio", filtro.FechaInicio ?? DateTime.MinValue);
+            command.Parameters.AddWithValue("@FechaFin", filtro.FechaFin ?? DateTime.MaxValue);
 
-            using (var command = new MySqlCommand(sql, connection))
+            connection.Open();
+            using (var reader = command.ExecuteReader())
             {
-                command.Parameters.AddWithValue("@PrecioMin", filtro.PrecioMin ?? 0);
-                command.Parameters.AddWithValue("@PrecioMax", filtro.PrecioMax ?? decimal.MaxValue);
-                command.Parameters.AddWithValue("@Uso", filtro.Uso ?? string.Empty);
-                command.Parameters.AddWithValue("@Tipo", filtro.Tipo ?? string.Empty);
-                command.Parameters.AddWithValue("@FechaInicio", filtro.FechaInicio ?? DateTime.MinValue);
-                command.Parameters.AddWithValue("@FechaFin", filtro.FechaFin ?? DateTime.MaxValue);
-
-                connection.Open();
-                using (var reader = command.ExecuteReader())
+                while (reader.Read())
                 {
-                    while (reader.Read())
+                    var inmueble = new Inmueble
                     {
-                        var inmueble = new Inmueble
-                        {
-                            id_inmueble = Convert.ToInt32(reader["id_inmueble"]),
-                            Direccion = reader["Direccion"].ToString(),
-                            Uso = (UsoInmueble)Enum.Parse(typeof(UsoInmueble), reader["Uso"].ToString()),
-                            Tipo = (TipoInmueble)Enum.Parse(typeof(TipoInmueble), reader["Tipo"].ToString()),
-                            Ambientes = Convert.ToInt32(reader["Ambientes"]),
-                            Latitud = reader.IsDBNull(reader.GetOrdinal("Latitud")) ? (decimal?)null : Convert.ToDecimal(reader["Latitud"]),
-                            Longitud = reader.IsDBNull(reader.GetOrdinal("Longitud")) ? (decimal?)null : Convert.ToDecimal(reader["Longitud"]),
-                            Precio = Convert.ToDecimal(reader["Precio"]),
-                            id_propietario = Convert.ToInt32(reader["id_propietario"])
-                        };
-                        inmuebles.Add(inmueble);
-                    }
+                        id_inmueble = Convert.ToInt32(reader["id_inmueble"]),
+                        Direccion = reader["Direccion"].ToString(),
+                        Uso = (UsoInmueble)Enum.Parse(typeof(UsoInmueble), reader["Uso"].ToString()),
+                        Tipo = (TipoInmueble)Enum.Parse(typeof(TipoInmueble), reader["Tipo"].ToString()),
+                        Ambientes = Convert.ToInt32(reader["Ambientes"]),
+                        Latitud = reader.IsDBNull(reader.GetOrdinal("Latitud")) ? (decimal?)null : Convert.ToDecimal(reader["Latitud"]),
+                        Longitud = reader.IsDBNull(reader.GetOrdinal("Longitud")) ? (decimal?)null : Convert.ToDecimal(reader["Longitud"]),
+                        Precio = Convert.ToDecimal(reader["Precio"]),
+                        id_propietario = Convert.ToInt32(reader["id_propietario"])
+                    };
+                    inmuebles.Add(inmueble);
                 }
             }
         }
-
-        return inmuebles;
     }
+
+    return inmuebles;
+}
+
 
     public void CrearContrato(Contrato contrato)
     {
@@ -105,7 +107,8 @@ public class RepositorioContrato
                 inm.{nameof(Inmueble.Precio)} as PrecioInmueble
             FROM {nameof(Inquilino)} i
             JOIN {nameof(Contrato)} c ON i.{nameof(Inquilino.id_inquilino)} = c.{nameof(Contrato.id_inquilino)}
-            JOIN {nameof(Inmueble)} inm ON inm.{nameof(Inmueble.id_inmueble)} = c.{nameof(Contrato.id_inmueble)}";
+            JOIN {nameof(Inmueble)} inm ON inm.{nameof(Inmueble.id_inmueble)} = c.{nameof(Contrato.id_inmueble)}
+            WHERE c.{nameof(Contrato.estado)}=1";
 
             using (var command = new MySqlCommand(sql, connection))
             {
@@ -229,7 +232,7 @@ public Contrato GetContrato(int id)
     return contrato;
 }
 
-
+/*
     public void EliminarContrato(int id)
     {
         using (var connection = new MySqlConnection(ConnectionString))
@@ -245,7 +248,24 @@ public Contrato GetContrato(int id)
             }
         }
     }
-
+*/
+public void EliminarContrato(int id)
+    {
+        using (var conexion = new MySqlConnection(ConnectionString))
+        {
+            var sql = @$"UPDATE contrato
+            SET {nameof(Contrato.estado)} = @{nameof(Contrato.estado)}
+            WHERE 
+                {nameof(Contrato.id_contrato)} = @{nameof(Contrato.id_contrato)}";
+            using (var comand = new MySqlCommand(sql, conexion))
+            {
+                conexion.Open();
+                comand.Parameters.AddWithValue($"@{nameof(Contrato.id_contrato)}", id);
+                comand.Parameters.AddWithValue($"@{nameof(Contrato.estado)}", 0);
+                comand.ExecuteNonQuery();
+            }
+        }
+    }
     public void EditarContrato(Contrato contrato)
     {
         using (var connection = new MySqlConnection(ConnectionString))
