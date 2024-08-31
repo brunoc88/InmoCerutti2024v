@@ -1,0 +1,50 @@
+@model IEnumerable<Inmueble>
+
+@{
+    ViewData["Title"] = "Listado";
+}
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - My Application</title>
+
+    <!-- Incluir Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<div>
+    <h2>Propiedades Disponibles!</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Dirección</th>
+                <th>Ambientes</th>
+                <th>Latitud</th>
+                <th>Longitud</th>
+                <th>Precio</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.id_inmueble</td>
+                    <td>@item.Direccion</td>
+                    <td>@item.Ambientes</td>
+                    <td>@item.Latitud</td>
+                    <td>@item.Longitud</td>
+                    <td>@item.Precio</td>
+                    <td><a asp-action="Alta" asp-route-id="@item.id_inmueble" class="btn btn-primary">
+                            <i class="fas fa-edit"></i> Crear Contrato
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

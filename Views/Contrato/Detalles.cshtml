@@ -1,0 +1,94 @@
+@model Contrato
+
+<h2>Detalles del Contrato</h2>
+
+<div class="container">
+    <h3>Información del Contrato</h3>
+    <table class="table">
+        <tr>
+            <th>ID Contrato</th>
+            <td>@Model.id_contrato</td>
+        </tr>
+        <tr>
+            <th>ID Inmueble</th>
+            <td>@Model.id_inmueble</td>
+        </tr>
+        <tr>
+            <th>ID Inquilino</th>
+            <td>@Model.id_inquilino</td>
+        </tr>
+        <tr>
+            <th>Precio</th>
+            <td>@Model.Precio.ToString("C")</td>
+        </tr>
+        <tr>
+            <th>Fecha de Inicio</th>
+            <td>@Model.FechaInicio.ToShortDateString()</td>
+        </tr>
+        <tr>
+            <th>Fecha de Fin</th>
+            <td>@Model.FechaFin.ToShortDateString()</td>
+        </tr>
+    </table>
+
+    <h3>Información del Inquilino</h3>
+    <table class="table">
+        <tr>
+            <th>Nombre</th>
+            <td>@Model.inquilino.Nombre</td>
+        </tr>
+        <tr>
+            <th>Apellido</th>
+            <td>@Model.inquilino.Apellido</td>
+        </tr>
+        <tr>
+            <th>DNI</th>
+            <td>@Model.inquilino.Dni</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>@Model.inquilino.Email</td>
+        </tr>
+        <tr>
+            <th>Teléfono</th>
+            <td>@Model.inquilino.Telefono</td>
+        </tr>
+    </table>
+
+    <h3>Información del Inmueble</h3>
+    <table class="table">
+        <tr>
+            <th>Dirección</th>
+            <td>@Model.inmueble.Direccion</td>
+        </tr>
+        <tr>
+            <th>Uso</th>
+            <td>@Model.inmueble.Uso</td>
+        </tr>
+        <tr>
+            <th>Tipo</th>
+            <td>@Model.inmueble.Tipo</td>
+        </tr>
+        <tr>
+            <th>Cantidad de Ambientes</th>
+            <td>@Model.inmueble.Ambientes</td>
+        </tr>
+        <tr>
+            <th>Latitud</th>
+            <td>@Model.inmueble.Latitud</td>
+        </tr>
+        <tr>
+            <th>Longitud</th>
+            <td>@Model.inmueble.Longitud</td>
+        </tr>
+        <tr>
+            <th>Precio del Inmueble</th>
+            <td>@Model.inmueble.Precio.ToString("C")</td>
+        </tr>
+    </table>
+
+    <div>
+        <a asp-action="Editar" asp-route-id="@Model.id_contrato" class="btn btn-primary">Editar Contrato</a>
+        <a asp-action="Index" class="btn btn-secondary">Volver al Índice</a>
+    </div>
+</div>

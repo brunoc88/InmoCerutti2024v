@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inmobiliaria-Cerutti", "Inmobiliaria-Cerutti.csproj", "{4231D98D-FDC8-4319-A3C8-383C0BD8CF02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inmobiliaria-Cerutti", "Inmobiliaria-Cerutti.csproj", "{1056D81C-E459-4A85-BD75-256431BED226}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4231D98D-FDC8-4319-A3C8-383C0BD8CF02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4231D98D-FDC8-4319-A3C8-383C0BD8CF02}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4231D98D-FDC8-4319-A3C8-383C0BD8CF02}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4231D98D-FDC8-4319-A3C8-383C0BD8CF02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1056D81C-E459-4A85-BD75-256431BED226}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1056D81C-E459-4A85-BD75-256431BED226}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1056D81C-E459-4A85-BD75-256431BED226}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1056D81C-E459-4A85-BD75-256431BED226}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,75 @@
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - My Application</title>
+
+    <!-- Incluir Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+
+
+@model Filtro;
+
+<div class="row">
+    <div class="col-md-4">
+
+<form method="post" asp-action="Listado">
+        <div class="form-group">
+        <label for="Tipo">Tipo</label>
+        <select asp-for="Tipo" class="form-control">
+            <option value="">Seleccionar Tipo</option>
+            <option value="Local">Local</option>
+            <option value="Deposito">Deposito</option>
+            <option value="Casa">Casa</option>
+            <option value="Departamento">Departamento</option>
+            <option value="Otro">Otro</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="Uso">Uso</label>
+        <select asp-for="Uso" class="form-control">
+            <option value="">Seleccionar Uso</option>
+            <option value="Comercial">Comercial</option>
+            <option value="Residencial">Residencial</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Ambientes"></label>
+        <input asp-for="Ambientes" class="form-control" />
+        <span asp-validation-for="Ambientes" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="PrecioMin">Precio Mínimo</label>
+        <input asp-for="PrecioMin" type="number" class="form-control" step="0.01" />
+    </div>
+
+    <div class="form-group">
+        <label for="PrecioMax">Precio Máximo</label>
+        <input asp-for="PrecioMax" type="number" class="form-control" step="0.01" />
+    </div>
+
+    <div class="form-group">
+        <label for="FechaInicio">Fecha de Inicio</label>
+        <input asp-for="FechaInicio" type="date" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label for="FechaFin">Fecha de Fin</label>
+        <input asp-for="FechaFin" type="date" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Buscar</button>
+</form>
+
+</div>
+</div>
+
+<div>
+    <a asp-action="Index">Volver</a>
+</div>
+

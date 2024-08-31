@@ -1,0 +1,8 @@
+LEFT JOIN: Se utiliza para incluir todos los inmuebles, 
+incluso aquellos que no tienen contratos asociados. 
+Esto es útil porque queremos listar todos los inmuebles que estén disponibles,
+ ya sea que tengan contratos vigentes o no.
+
+
+Uso de reader.GetOrdinal: Este método obtiene el índice de la columna a partir del nombre de la misma,
+ asegurando que el acceso a los datos sea más eficiente y seguro en comparación con el uso directo de nombres.
