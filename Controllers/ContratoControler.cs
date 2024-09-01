@@ -60,7 +60,8 @@ public class ContratoController : Controller
 
         var contrato = new Contrato
         {
-            id_inmueble = inmueble.id_inmueble
+            id_inmueble = inmueble.id_inmueble,
+            
         };
 
         return View(contrato);

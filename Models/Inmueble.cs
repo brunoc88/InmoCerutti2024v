@@ -1,20 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-public enum UsoInmueble
-{
-    Comercial,
-    Residencial
-}
-
-public enum TipoInmueble
-{
-    Local,
-    Deposito,
-    Casa,
-    Departamento,
-    Otro
-}
 
 public class Inmueble
 {
@@ -23,11 +9,11 @@ public class Inmueble
     [Required(ErrorMessage = "Debe ingresar una Direccion.")]
     public string Direccion { get; set; }
 
-    [Required(ErrorMessage = "Debe Elegir el tipo de Uso.")]
-    public UsoInmueble Uso { get; set; }
+    [Required(ErrorMessage = "Debe Ingresar el tipo de Uso.")]
+    public string Uso { get; set; }
 
-    [Required(ErrorMessage = "Debe Elegir el tipo de Inmueble.")]
-    public TipoInmueble Tipo { get; set; }
+    [Required(ErrorMessage = "Debe Ingresar el tipo de Inmueble.")]
+    public string Tipo { get; set; }
 
     [Required(ErrorMessage = "Debe detallar la cantidad de ambientes.")]
     public int Ambientes { get; set; }

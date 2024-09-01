@@ -6,7 +6,18 @@
 }
 
 <h2>Crear Contrato</h2>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - My Application</title>
 
+    <!-- Incluir Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<div class="row">
+    <div class="col-md-4">
 <form asp-action="Alta">
     
     
@@ -29,13 +40,13 @@
 
     <div class="form-group">
         <label asp-for="FechaInicio"></label>
-        <input asp-for="FechaInicio" class="form-control" type="date" />
+        <input asp-for="FechaInicio" class="form-control" type="date" value="@Model.FechaInicio != DateTime.MinValue ? Model.FechaInicio.ToString("yyyy-MM-dd") : DateTime.Now.ToString("yyyy-MM-dd")" />
         <span asp-validation-for="FechaInicio" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="FechaFin"></label>
-        <input asp-for="FechaFin" class="form-control" type="date" />
+        <input asp-for="FechaFin" class="form-control" type="date" value="@Model.FechaFin != DateTime.MinValue ? Model.FechaFin.ToString("yyyy-MM-dd") : DateTime.Now.AddYears(1).ToString("yyyy-MM-dd")" />
         <span asp-validation-for="FechaFin" class="text-danger"></span>
     </div>
 
@@ -49,6 +60,8 @@
         <input type="submit" value="Guardar" class="btn btn-primary" />
     </div>
 </form>
+</div>
+</div>
 
 <div>
     <a asp-action="Index">Indice</a>

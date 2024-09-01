@@ -23,6 +23,7 @@ public List<Inmueble> GetInmueblesDisponibles(Filtro filtro)
 
         using (var command = new MySqlCommand(sql, connection))
         {
+            // Asegúrate de manejar nulls para los filtros opcionales
             command.Parameters.AddWithValue("@PrecioMin", filtro.PrecioMin ?? 0);
             command.Parameters.AddWithValue("@PrecioMax", filtro.PrecioMax ?? decimal.MaxValue);
             command.Parameters.AddWithValue("@Uso", filtro.Uso ?? string.Empty);
@@ -33,19 +34,31 @@ public List<Inmueble> GetInmueblesDisponibles(Filtro filtro)
             connection.Open();
             using (var reader = command.ExecuteReader())
             {
+                var idInmuebleIndex = reader.GetOrdinal("id_inmueble");
+                var precioIndex = reader.GetOrdinal("Precio");
+                var usoIndex = reader.GetOrdinal("Uso");
+                var tipoIndex = reader.GetOrdinal("Tipo");
+                var estadoIndex = reader.GetOrdinal("Estado");
+                var direccionIndex = reader.GetOrdinal("Direccion");
+                var ambientesIndex = reader.GetOrdinal("Ambientes");
+                var latitudIndex = reader.GetOrdinal("Latitud");
+                var longitudIndex = reader.GetOrdinal("Longitud");
+                var idPropietarioIndex = reader.GetOrdinal("id_propietario");
+
                 while (reader.Read())
                 {
                     var inmueble = new Inmueble
                     {
-                        id_inmueble = Convert.ToInt32(reader["id_inmueble"]),
-                        Direccion = reader["Direccion"].ToString(),
-                        Uso = (UsoInmueble)Enum.Parse(typeof(UsoInmueble), reader["Uso"].ToString()),
-                        Tipo = (TipoInmueble)Enum.Parse(typeof(TipoInmueble), reader["Tipo"].ToString()),
-                        Ambientes = Convert.ToInt32(reader["Ambientes"]),
-                        Latitud = reader.IsDBNull(reader.GetOrdinal("Latitud")) ? (decimal?)null : Convert.ToDecimal(reader["Latitud"]),
-                        Longitud = reader.IsDBNull(reader.GetOrdinal("Longitud")) ? (decimal?)null : Convert.ToDecimal(reader["Longitud"]),
-                        Precio = Convert.ToDecimal(reader["Precio"]),
-                        id_propietario = Convert.ToInt32(reader["id_propietario"])
+                        id_inmueble = reader.GetInt32(idInmuebleIndex),
+                        Precio = reader.GetDecimal(precioIndex),
+                        Uso = reader.GetString(usoIndex),
+                        Tipo = reader.GetString(tipoIndex),
+                        estado = reader.GetByte(estadoIndex) == 1, // Conversión a bool
+                        Direccion = reader.GetString(direccionIndex),
+                        Ambientes = reader.GetInt32(ambientesIndex),
+                        Latitud = reader.GetDecimal(latitudIndex),
+                        Longitud = reader.GetDecimal(longitudIndex),
+                        id_propietario = reader.GetInt32(idPropietarioIndex)
                     };
                     inmuebles.Add(inmueble);
                 }
@@ -136,8 +149,8 @@ public List<Inmueble> GetInmueblesDisponibles(Filtro filtro)
                             inmueble = new Inmueble
                             {
                                 Direccion = reader.GetString(nameof(Inmueble.Direccion)),
-                                Uso = (UsoInmueble)Enum.Parse(typeof(UsoInmueble), reader.GetString(nameof(Inmueble.Uso))),
-                                Tipo = (TipoInmueble)Enum.Parse(typeof(TipoInmueble), reader.GetString(nameof(Inmueble.Tipo))),
+                                Uso = reader.GetString(nameof(Inmueble.Uso)),
+                                Tipo = reader.GetString(nameof(Inmueble.Tipo)),
                                 Ambientes = reader.GetInt32(nameof(Inmueble.Ambientes)),
                                 Latitud = reader.GetDecimal(nameof(Inmueble.Latitud)),
                                 Longitud = reader.GetDecimal(nameof(Inmueble.Longitud)),
@@ -211,8 +224,8 @@ public Contrato GetContrato(int id)
                         inmueble = new Inmueble
                         {
                             Direccion = reader.GetString("Direccion"),
-                            Uso = (UsoInmueble)Enum.Parse(typeof(UsoInmueble), reader.GetString("Uso")),
-                            Tipo = (TipoInmueble)Enum.Parse(typeof(TipoInmueble), reader.GetString("Tipo")),
+                            Uso = reader.GetString("Uso"),
+                            Tipo = reader.GetString("Tipo"),
                             Ambientes = reader.GetInt32("Ambientes"),
                             Latitud = reader.GetDecimal("Latitud"),
                             Longitud = reader.GetDecimal("Longitud"),

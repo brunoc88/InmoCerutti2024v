@@ -39,24 +39,23 @@ public class InmuebleController : Controller
         }
     }
 
-
-    public IActionResult guardar(Inmueble inmueble)
+    [HttpPost]
+    public IActionResult Guardar(Inmueble inmueble)
     {
         try
         {
             var ri = new RepositorioInmueble();
             ri.AltaInmueble(inmueble);
-            TempData["mensaje"] = "Inmueble agregado con exito!";
+            TempData["mensaje"] = "Inmueble guardado con éxito!";
             return RedirectToAction(nameof(Index));
         }
         catch (Exception ex)
         {
-            TempData["error"] = "Error: al inmueble ya está registrado.";
+            TempData["error"] = "Error: al agregar el inmueble.";
             return RedirectToAction(nameof(Crear));
         }
-
-
     }
+
 
     public IActionResult Eliminar(int id)
     {
@@ -66,7 +65,9 @@ public class InmuebleController : Controller
             ri.eliminarPropiedad(id);
             TempData["mensaje"] = "Inmueble Eliminado con exito!";
             return RedirectToAction(nameof(Index));
-        }catch(Exception ex){
+        }
+        catch (Exception ex)
+        {
             TempData["error"] = "Error: al eliminar el inmueble.";
             return RedirectToAction(nameof(Index));
         }
@@ -86,14 +87,16 @@ public class InmuebleController : Controller
     // POST: Inmueble/Edit/
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public ActionResult Editar(int id, Inmueble inmueble)
+    public IActionResult Editar(int id, Inmueble inmueble)
     {
-        var ri = new RepositorioInmueble();
         try
         {
+            var ri = new RepositorioInmueble();
+            var rp = new RepositorioPropietario();
+            
             inmueble.id_inmueble = id;
             ri.EditarInmueble(inmueble);
-            TempData["Mensaje"] = "Datos guardados correctamente";
+            TempData["Mensaje"] = "Inmueble editado correctamente";
             return RedirectToAction(nameof(Index));
         }
         catch (Exception ex)
@@ -101,10 +104,9 @@ public class InmuebleController : Controller
             var rp = new RepositorioPropietario();
             ViewBag.Propietarios = rp.GetPropietarios();
             ViewBag.Error = ex.Message;
-            ViewBag.StackTrate = ex.StackTrace;
+            TempData["Error"] = "Error al editar el Inmueble";
             return View(inmueble);
         }
     }
-
-
 }
+
