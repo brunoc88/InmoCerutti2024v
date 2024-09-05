@@ -106,10 +106,14 @@ public class UsuarioController : Controller
     }
 
 
-
+    public IActionResult Login(){
+        return View();
+    }
+    [HttpPost]
     public async Task<IActionResult> Login(string email, string clave)
     {
-        var ru = new RepositorioUsuario();
+        try{
+            var ru = new RepositorioUsuario();
         var usuario = ru.GetUsuarioByEmail(email);
 
         if (usuario == null || usuario.Estado == false)
@@ -139,6 +143,20 @@ public class UsuarioController : Controller
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
         return RedirectToAction("Index", "Home");
+        
+        }catch(Exception ex){
+            if(email == null && clave == null){
+                TempData["error"] = "Debe ingresar un usuario y contraseña.";
+                return View();
+            }else if(email == null){
+                TempData["error"] = "Debe ingresar un usuario.";
+                return View();
+            }else{
+                TempData["error"] = "Debe ingresar una contraseña.";
+                return View();
+            }
+        }
+        
     }
 
     public IActionResult eliminar(int id)
@@ -274,7 +292,7 @@ public class UsuarioController : Controller
     public async Task<ActionResult> Logout()
     {
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-        return RedirectToAction("Index", "Home");
+        return RedirectToAction("Login", "Usuario");
     }
 
 }
