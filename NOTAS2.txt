@@ -1,0 +1,6 @@
+AVATARS EN WWWROOT
+CREAR CARPETA UPLOAD
+BAJAR IMAGENTES DE AVATAR
+USAR multipart/form-data en el formulario para los avatars
+
+en layotut tambien cambiar el tema de accesos para ver que menus tiene acceso el usuario

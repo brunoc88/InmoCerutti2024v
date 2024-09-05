@@ -20,3 +20,12 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.navbar .user-name {
+  background-color: #007bff; /* Fondo azul */
+  color: white !important; /* Color del texto */
+  border-radius: 5px; /* Bordes redondeados */
+  padding: 5px 10px; /* Espaciado interno */
+  font-weight: bold; /* Negrita en el texto */
+  text-decoration: none; /* Sin subrayado */
+}

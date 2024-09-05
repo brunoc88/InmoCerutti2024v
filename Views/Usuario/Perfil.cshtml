@@ -1,0 +1,58 @@
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - My Application</title>
+
+    <!-- Incluir Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+
+
+@model Usuario
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <!-- Tarjeta de perfil -->
+            <div class="card shadow-sm">
+                <div class="card-header text-center bg-primary text-white">
+                    <h2>Perfil de @Model.Nombre @Model.Apellido</h2>
+                </div>
+                <div class="card-body">
+                    <!-- Avatar del usuario -->
+                    <div class="text-center mb-4">
+                        @if (!string.IsNullOrEmpty(Model.AvatarUrl))
+                        {
+                            <img src="@Url.Content(Model.AvatarUrl)" class="rounded-circle img-thumbnail" alt="Avatar" width="150" height="150" />
+                        }
+                        else
+                        {
+                            <img src="" class="rounded-circle img-thumbnail" alt="Sin Avatar" width="150" height="150" />
+                        }
+                    </div>
+
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Nombre:</strong> @Model.Nombre</p>
+                            <p><strong>Apellido:</strong> @Model.Apellido</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Email:</strong> @Model.Email</p>
+                            <p><strong>Rol:</strong> @Model.Rol</p>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <a asp-action="Editar" asp-route-id="@Model.Id" class="btn btn-primary">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

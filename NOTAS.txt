@@ -5,4 +5,13 @@ Esto es útil porque queremos listar todos los inmuebles que estén disponibles,
 
 
 Uso de reader.GetOrdinal: Este método obtiene el índice de la columna a partir del nombre de la misma,
- asegurando que el acceso a los datos sea más eficiente y seguro en comparación con el uso directo de nombres.
+ asegurando que el acceso a los datos sea más eficiente y seguro en comparación con el uso directo
+ de nombres.
+
+tuve que crear dos carpetas una para los avartars(uploads) donde el usuario elige
+y otra donde se guarda el avatar con ese nombre unico(avartars)
+
+tuve que forsar el input de avar en el formulario de crear porque no me dejaba mandarlo
+de esta forma podia crear un usuario sin la oblicagion de elegir un avar.
+por el tema de las jquery validations usando data-val="false" en el input
+lo mismo tuve que hacer en el de edit para no tener que escribir la clave(por si queria conservarla)
