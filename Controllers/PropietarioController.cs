@@ -1,11 +1,12 @@
-
 using System.Globalization;
 using Inmobiliaria_Cerutti.Models;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Inmobiliaria_Cerutti.PropietarioController;
 
+[Authorize]
 public class PropietarioController : Controller
 {
     private readonly ILogger<PropietarioController> _logger;
@@ -63,6 +64,7 @@ public class PropietarioController : Controller
         
     }
 
+    [Authorize(Roles = "Administrador")]
     public IActionResult Eliminar(int id){
         RepositorioPropietario rp = new RepositorioPropietario();
         rp.EliminarPropietario(id);

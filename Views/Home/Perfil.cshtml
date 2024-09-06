@@ -9,7 +9,12 @@
 
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
-
+@if (TempData["mensaje"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["mensaje"]
+    </div>
+}
 
 @model Usuario
 

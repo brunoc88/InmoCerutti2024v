@@ -1,17 +1,14 @@
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
+using Microsoft.AspNetCore.Authorization;
 
+
+[Authorize(Roles = "Administrador")] //que esten autorizados y sea admin
+//significa que este controlador solo van a tener acceso a las rutas los admin.
 public class UsuarioController : Controller
 {
-
 
     public UsuarioController()
     {
@@ -106,59 +103,7 @@ public class UsuarioController : Controller
     }
 
 
-    public IActionResult Login(){
-        return View();
-    }
-    [HttpPost]
-    public async Task<IActionResult> Login(string email, string clave)
-    {
-        try{
-            var ru = new RepositorioUsuario();
-        var usuario = ru.GetUsuarioByEmail(email);
-
-        if (usuario == null || usuario.Estado == false)
-        {
-            TempData["error"] = "Correo electrónico no registrado o cuenta inactiva.";
-            return View();
-        }
-
-        // Verifico la contraseña usando el salt almacenado
-        var hashedPassword = HashPassword(clave, usuario.Salt);
-
-        if (usuario.Clave != hashedPassword)
-        {
-            TempData["error"] = "Contraseña incorrecta.";
-            return View();
-        }
-
-        // Autenticación exitosa
-        var claims = new List<Claim>
-    {
-        new Claim(ClaimTypes.Email, usuario.Email),
-        new Claim(ClaimTypes.Name, usuario.Nombre),
-        new Claim(ClaimTypes.Role, usuario.Rol)
-    };
-
-        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-
-        return RedirectToAction("Index", "Home");
-        
-        }catch(Exception ex){
-            if(email == null && clave == null){
-                TempData["error"] = "Debe ingresar un usuario y contraseña.";
-                return View();
-            }else if(email == null){
-                TempData["error"] = "Debe ingresar un usuario.";
-                return View();
-            }else{
-                TempData["error"] = "Debe ingresar una contraseña.";
-                return View();
-            }
-        }
-        
-    }
-
+    
     public IActionResult eliminar(int id)
     {
         try
@@ -271,29 +216,6 @@ public class UsuarioController : Controller
     }
 }
 
-
-    public IActionResult Perfil()
-    {
-        // Obtengo el email del usuario autenticado desde los claims
-        var email = User.FindFirst(ClaimTypes.Email)?.Value;
-
-
-
-        // Buscar el usuario por su email en la base de datos
-        var ru = new RepositorioUsuario();
-        var usuario = ru.GetUsuarioByEmail(email);
-
-
-
-        // Paso el usuario a la vista de perfil
-        return View(usuario);
-    }
-
-    public async Task<ActionResult> Logout()
-    {
-        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-        return RedirectToAction("Login", "Usuario");
-    }
 
 }
 

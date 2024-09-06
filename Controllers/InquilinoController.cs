@@ -2,9 +2,11 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography.X509Certificates;
 using MySql.Data.MySqlClient;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Inmobiliaria_Cerutti.InquilinoController;
 
+[Authorize]//aca pueden acceder tanto empleado como admin
 public class InquilinoController : Controller
 {
     private readonly ILogger<InquilinoController> _logger;
@@ -63,6 +65,7 @@ public class InquilinoController : Controller
         
     }
 
+    [Authorize(Roles ="Administrador")] //solo el administrador va a tener el poder de eliminar
     public IActionResult Eliminar(int id){
         RepositorioInquilino ri = new RepositorioInquilino();
         ri.EliminarInquilino(id);

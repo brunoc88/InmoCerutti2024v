@@ -19,6 +19,13 @@
     </div>
 }
 
+@if (TempData["mensaje"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["mensaje"]
+    </div>
+}
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-6 col-lg-4">
@@ -32,13 +39,13 @@
 
                         <div class="mb-3">
                             <label for="Email" class="form-label">Correo Electrónico</label>
-                            <input id="Email" name="Email" class="form-control" placeholder="Correo Electrónico" />
+                            <input id="Email" name="Email" class="form-control"/>
                             
                         </div>
 
                         <div class="mb-3">
                             <label for="Clave" class="form-label">Contraseña</label>
-                            <input id="Clave" name="Clave" type="password" class="form-control" placeholder="Contraseña" />
+                            <input id="Clave" name="Clave" type="password" class="form-control"/>
                             
                         </div>
 

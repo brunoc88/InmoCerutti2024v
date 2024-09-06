@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "Acceso Denegado!";
 }
 <head>
     <meta charset="utf-8" />
@@ -11,6 +11,61 @@
 
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
-<h1>@ViewData["Title"]</h1>
+<body>
+    <section class="access-denied">
+        <div class="container">
+            <div class="text-center">
+                <i class="fas fa-exclamation-triangle" style="color: #e74c3c; font-size: 64px;"></i>
+                <h1 class="title">@ViewData["Title"]</h1>
+                <p class="message">Lo sentimos, pero usted no tiene acceso a esta sección.</p>
+                <a asp-action="Index" class="btn btn-primary">
+                    <i class="fas fa-home"></i> Volver a la página principal
+                </a>
+            </div>
+        </div>
+    </section>
 
-<p>Use this page to detail your site's privacy policy.</p>
+    <style>
+        .access-denied {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f7f7f7;
+        }
+
+        .container {
+            max-width: 600px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .title {
+            font-size: 36px;
+            margin: 20px 0;
+            color: #333;
+        }
+
+        .message {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 5px;
+            color: white;
+            background-color: #3498db;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</body>

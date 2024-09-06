@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Org.BouncyCastle.Asn1.Pkcs;
 using MySql.Data.MySqlClient;
 using Mysqlx;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Inmobiliaria_Cerutti.ContratoController;
 
+[Authorize]
 public class ContratoController : Controller
 {
     private readonly ILogger<ContratoController> _logger;
@@ -74,6 +76,7 @@ public class ContratoController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    [Authorize(Roles = "Administrador")]
     public IActionResult Eliminar(int id){
         var rc = new RepositorioContrato();
         rc.EliminarContrato(id);

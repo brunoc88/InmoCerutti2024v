@@ -2,9 +2,11 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Inmobiliaria_Cerutti.Models;
 using System.Linq.Expressions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Inmobiliaria_Cerutti.InmuebleController;
 
+[Authorize]
 public class InmuebleController : Controller
 {
     private readonly ILogger<InmuebleController> _logger;
@@ -57,6 +59,7 @@ public class InmuebleController : Controller
     }
 
 
+    [Authorize(Roles = "Administrador")]
     public IActionResult Eliminar(int id)
     {
         try

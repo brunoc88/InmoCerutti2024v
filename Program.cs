@@ -8,8 +8,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
 .AddCookie(options => //validacion con cookies
 {
-    options.LoginPath = "/Usuario/Login";
-    options.LogoutPath = "/Usuario/Logout";
+    options.LoginPath = "/Home/Login";
+    options.LogoutPath = "/Home/Logout";
     options.AccessDeniedPath = "/Home/Privacy";
 });
 
@@ -51,7 +51,7 @@ app.MapControllerRoute(
 app.Run();*/
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Usuario}/{action=Login}/{id?}");
+    pattern: "{controller=Home}/{action=Login}/{id?}");
 
 app.Run();
 

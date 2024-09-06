@@ -1,0 +1,82 @@
+@model Usuario
+
+@if (TempData["error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["error"]
+    </div>
+}
+
+@if (TempData["mensaje"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["mensaje"]
+    </div>
+}
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - My Application</title>
+
+    <!-- Incluir Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+
+<div class="alert alert-info">
+    Si no escribe una nueva contraseña o no elige un nuevo avatar, se conservarán los valores existentes.
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Editar" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label asp-for="Nombre" class="control-label"></label>
+                <input asp-for="Nombre" class="form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Apellido" class="control-label"></label>
+                <input asp-for="Apellido" class="form-control" />
+                <span asp-validation-for="Apellido" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" type="email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Clave" class="control-label"></label>
+                <input asp-for="Clave" type="password" class="form-control" data-val="false"/>
+                <span asp-validation-for="Clave" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AvatarFile" class="control-label"></label>
+                <input asp-for="AvatarFile" type="file" class="form-control-file" data-val="false" />
+            </div>
+            @if (!string.IsNullOrEmpty(Model.AvatarUrl))
+            {
+                <div class="form-group">
+                    <img src="@Url.Content(Model.AvatarUrl)" alt="Avatar" style="width:100px;height:100px;" />
+                    <div class="form-check">
+                        <input type="checkbox" name="EliminarAvatar" value="true" class="form-check-input" id="eliminarAvatar" />
+                        <label class="form-check-label" for="eliminarAvatar">Eliminar Avatar</label>
+                    </div>
+                </div>
+            }
+            <div class="form-group">
+                <label asp-for="Rol" class="control-label"></label>
+                <input asp-for="Rol" type="text" class="form-control" value="@Model.Rol" readonly>
+                <span asp-validation-for="Rol" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Guardar Cambios" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    <a asp-action="Index">Volver</a>
+</div>
