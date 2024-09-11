@@ -1,17 +1,15 @@
 @model Pago
 
 @{
-    var contratos = ViewBag.contratos as List<Contrato>;
+    ViewBag.Title = "Editar Pago";
 }
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - My Application</title>
-
     <!-- Incluir Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 
@@ -31,40 +29,35 @@
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Pagar" method="post">
+        <form asp-action="Editar" method="post">
+            <!-- Campo oculto para el id_pago -->
+            <input type="hidden" name="id_pago" value="@Model.id_pago" />
+
             <!-- Input para mostrar el nombre del inquilino -->
             <div class="form-group">
                 <label for="NombreInquilino">Nombre del Inquilino</label>
                 <input type="text" id="NombreInquilino" name="NombreInquilino"
-                    value="@contratos.FirstOrDefault()?.inquilino.Nombre @contratos.FirstOrDefault()?.inquilino.Apellido (@contratos.FirstOrDefault()?.inquilino.Dni)"
+                    value="@Model.contrato.inquilino.Nombre @Model.contrato.inquilino.Apellido (@Model.contrato.inquilino.Dni)"
                     class="form-control" readonly />
             </div>
 
-            <!-- Selector de domicilios asociados a los contratos del cliente -->
+            <!-- Domicilio asociado al cliente -->
             <div class="form-group">
-                <label for="id_contrato">Domicilio/s</label>
-                <select id="id_contrato" name="id_contrato" class="form-control">
-                    <option value="">Seleccione un domicilio</option>
-                    @foreach (var item in contratos)
-                    {
-                        <option value="@item.id_contrato">
-                            @item.inmueble.Direccion - $@item.inmueble.Precio
-                        </option>
-                    }
-                </select>
+                <label for="Domicilio">Domicilio</label>
+                <input type="text" id="Domicilio" value="@Model.contrato.inmueble.Direccion - $@Model.contrato.inmueble.Precio" readonly class="form-control" />
             </div>
 
             <!-- Fecha de pago -->
             <div class="form-group">
                 <label asp-for="FechaDePago"></label>
-                <input asp-for="FechaDePago" class="form-control" type="date" />
+                <input asp-for="FechaDePago" class="form-control" type="date" readonly />
                 <span asp-validation-for="FechaDePago" class="text-danger"></span>
             </div>
 
             <!-- Importe -->
             <div class="form-group">
                 <label asp-for="Importe"></label>
-                <input asp-for="Importe" class="form-control" />
+                <input asp-for="Importe" class="form-control" readonly data-val="false"/>
                 <span asp-validation-for="Importe" class="text-danger"></span>
             </div>
 
@@ -82,6 +75,7 @@
         </form>
     </div>
 </div>
+
 <div>
     <a asp-action="Index">Volver</a>
 </div>

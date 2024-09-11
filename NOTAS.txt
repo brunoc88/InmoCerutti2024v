@@ -24,3 +24,5 @@ lo mismo tuve que hacer en el de edit para no tener que escribir la clave(por si
 se uso el atributo min="@DateTime.Now.ToString("yyyy-MM-dd")" en el input de fecha de contrato y pago
 esto permite que el usuario pongas fechas pasadas a la hora de buscar inmuebles disponibles y realizar pagos
 <input asp-for="FechaDePago" class="form-control" type="date" id="fp" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+
+Tuve que poner el metodo .any() porque por mas que puse controles de excepciones me devolvian null las listas.

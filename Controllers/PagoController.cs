@@ -5,7 +5,8 @@ using Org.BouncyCastle.Asn1.Iana;
 namespace Inmobiliaria_Cerutti.PagoController;
 
 [Authorize]
-public class PagoController : Controller{
+public class PagoController : Controller
+{
     private readonly ILogger<PagoController> _logger;
 
     public PagoController(ILogger<PagoController> logger)
@@ -14,73 +15,116 @@ public class PagoController : Controller{
     }
 
 
-    public IActionResult Index(){
+    public IActionResult Index()
+    {
         var rpago = new RepositorioPago();
         var pagos = rpago.GetPagos();
         return View(pagos);
     }
-    public IActionResult buscar(){
+    public IActionResult buscar()
+    {
         return View();
     }
-   public IActionResult buscarDni(string dni)
-{
-    var rc = new RepositorioContrato();
-    var contratos = rc.GetContratoPorDni(dni);
-
-    if (contratos != null)
+    public IActionResult buscarDni(string dni)
     {
-        ViewBag.Contratos = contratos; // Pasamos los contratos a la vista usando ViewBag
-        return View("Pagar");
+        var rc = new RepositorioContrato();
+        var contratos = rc.GetContratoPorDni(dni);
+
+        if (contratos != null && contratos.Any()) // Verificamos si la lista tiene elementos
+        {
+            ViewBag.Contratos = contratos; // Pasamos los contratos a la vista usando ViewBag
+            return View("Pagar");
+        }
+        else
+        {
+            TempData["Error"] = "Error: Dni no registrado";
+            return View("buscar");
+        }
     }
-    else
+
+
+
+    public IActionResult Pagar(int id_contrato)
     {
-        TempData["Error"] = "Error: Dni no registrado";
-        return View("buscar");
+        ViewBag.IdContrato = id_contrato;
+        return View();
     }
 
-}
 
-    
-public IActionResult Pagar(int id_contrato)
+
+    [HttpPost]
+    public IActionResult Pagar(Pago pago)
+    {
+
+        var rpago = new RepositorioPago();
+        try
+        {
+            rpago.Pagar(pago);
+            TempData["mensaje"] = "Pago realizado con éxito.";
+            return RedirectToAction("Index");
+        }
+        catch (Exception ex)
+        {
+            TempData["error"] = $"Error al realizar el pago: {ex.Message}";
+            return View(pago);
+        }
+
+    }
+
+    [Authorize(Roles = "Administrador")]
+    public IActionResult Eliminar(int id)
+    {
+        var rpago = new RepositorioPago();
+        try
+        {
+            rpago.EliminarPago(id);
+            TempData["mensaje"] = "Pago eliminado con éxito.";
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception ex)
+        {
+            TempData["error"] = $"Error al eliminar el pago: {ex.Message}";
+            return RedirectToAction(nameof(Index));
+        }
+
+    }
+
+public IActionResult Editar(int id)
 {
-    ViewBag.IdContrato = id_contrato; // Asegúrate de pasar solo el ID
-    return View();
-}
-
-
-
-[HttpPost]
-public IActionResult Pagar(Pago pago)
-{
-  
     var rpago = new RepositorioPago();
     try
     {
-        rpago.Pagar(pago);
-        TempData["mensaje"] = "Pago realizado con éxito.";
-        return RedirectToAction("Index");
+        var pago = rpago.GetPago(id);
+        if (pago == null)
+        {
+            TempData["error"] = "Pago no encontrado.";
+            return RedirectToAction(nameof(Index));
+        }
+        return View(pago); // Pasa el modelo a la vista
     }
     catch (Exception ex)
     {
-        TempData["error"] = $"Error al realizar el pago: {ex.Message}";
-        return View(pago);
+        TempData["error"] = $"Error al obtener el pago: {ex.Message}";
+        return RedirectToAction(nameof(Index));
     }
-
 }
 
-[Authorize(Roles = "Administrador")]
-public IActionResult Eliminar(int id){
-    var rpago = new RepositorioPago();
-    try{
-        rpago.EliminarPago(id);
-        TempData["mensaje"] = "Pago eliminado con éxito.";
-        return View(nameof(Index));
-    }catch(Exception ex){
-        TempData["error"] = $"Error al eliminar el pago: {ex.Message}";
-        return View(nameof(Index));
+[HttpPost]
+public IActionResult Editar(Pago pago)
+{
+    try
+    {
+        var rpago = new RepositorioPago();
+        rpago.EditarPago(pago);
+        TempData["mensaje"] = "Pago Modificado!";
+        return RedirectToAction(nameof(Index)); 
     }
-    
+    catch (Exception ex)
+    {
+        TempData["error"] = $"No se pudo editar el pago: {ex.Message}";
+        return RedirectToAction(nameof(Index)); 
+    }
 }
 
-   
+
 }

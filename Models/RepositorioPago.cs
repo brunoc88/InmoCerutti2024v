@@ -93,5 +93,75 @@ public List<Pago> GetPagos(){
     }
 }
 
+public void EditarPago(Pago pago)
+{
+    
+    using(var conexion = new MySqlConnection(ConnectionString))
+    {
+        var sql = "UPDATE pago SET Motivo = @Motivo WHERE id_pago = @id_pago";
+        using (var command = new MySqlCommand(sql, conexion))
+        {
+            command.Parameters.AddWithValue("@id_pago", pago.id_pago);
+            command.Parameters.AddWithValue("@Motivo", pago.Motivo);
+            conexion.Open();
+            command.ExecuteNonQuery();
+        }
+    }
+}
+
+
+
+public Pago GetPago(int id)
+{
+    using (var conexion = new MySqlConnection(ConnectionString))
+    {
+        var sql = "SELECT * FROM pago p " +
+                  "JOIN contrato c ON c.id_contrato = p.id_contrato " +
+                  "JOIN inquilino i ON i.id_inquilino = c.id_inquilino " +
+                  "JOIN inmueble inm ON inm.id_inmueble = c.id_inmueble " +
+                  "WHERE p.id_pago = @id_pago";
+
+        using (var command = new MySqlCommand(sql, conexion))
+        {
+            command.Parameters.AddWithValue("@id_pago", id);
+
+            conexion.Open();
+            using (var reader = command.ExecuteReader())
+            {
+                if (reader.Read())
+                {
+                    return new Pago()
+                    {
+                        id_pago = reader.GetInt32("id_pago"),
+                        Motivo = reader.IsDBNull(reader.GetOrdinal("Motivo")) ? null : reader.GetString("Motivo"),
+                        FechaDePago = reader.GetDateTime("FechaDePago"),
+                        Importe = reader.GetDecimal("Importe"),
+                        id_contrato = reader.GetInt32("id_contrato"),
+                        contrato = new Contrato()
+                        {
+                            id_contrato = reader.GetInt32("id_contrato"),
+                            id_inquilino = reader.GetInt32("id_inquilino"),
+                            inquilino = new Inquilino()
+                            {
+                                Nombre = reader.GetString("Nombre"),
+                                Apellido = reader.GetString("Apellido"),
+                                Dni = reader.GetString("Dni")
+                            },
+                            inmueble = new Inmueble()
+                            {
+                                Direccion = reader.GetString("Direccion"),
+                                Precio = reader.GetDecimal("Precio")
+                            }
+                        }
+                    };
+                }
+                else
+                {
+                    return null; // No se encontró ningún pago con ese id
+                }
+            }
+        }
+    }
+}
 
 }

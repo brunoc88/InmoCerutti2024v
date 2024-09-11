@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-09-2024 a las 02:47:19
+-- Tiempo de generación: 11-09-2024 a las 19:15:49
 -- Versión del servidor: 10.4.25-MariaDB
 -- Versión de PHP: 8.1.10
 
@@ -135,9 +135,9 @@ CREATE TABLE `pago` (
 --
 
 INSERT INTO `pago` (`id_pago`, `FechaDePago`, `Motivo`, `Importe`, `id_contrato`, `Estado`) VALUES
-(11, '2024-09-18', '\"alquiler\"', '222.00', 16, 1),
 (12, '2024-09-19', 'alquiler', '222.00', 15, 1),
-(13, '2024-09-19', '\"alquiler\"', '222.00', 19, 0);
+(15, '2024-09-12', '\"alquiler\"', '222.00', 16, 1),
+(16, '2024-09-13', '\"alquiler\"', '222.00', 15, 1);
 
 -- --------------------------------------------------------
 
@@ -273,7 +273,7 @@ ALTER TABLE `inquilino`
 -- AUTO_INCREMENT de la tabla `pago`
 --
 ALTER TABLE `pago`
-  MODIFY `id_pago` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_pago` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `propietario`
