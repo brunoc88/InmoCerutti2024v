@@ -31,7 +31,7 @@
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Pagar" method="post">
+        <form asp-action="Pagar" method="post" onsubmit="return validarSeleccion()">
             <!-- Input para mostrar el nombre del inquilino -->
             <div class="form-group">
                 <label for="NombreInquilino">Nombre del Inquilino</label>
@@ -85,3 +85,13 @@
 <div>
     <a asp-action="Index">Volver</a>
 </div>
+<script>
+    function validarSeleccion() {
+        var contrato = document.getElementById("id_contrato").value;
+        if (contrato == 0) {
+            alert("Debe seleccionar un domicilio.");
+            return false;
+        }
+        return true;
+    }
+</script>

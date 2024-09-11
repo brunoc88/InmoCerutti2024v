@@ -299,7 +299,59 @@ public List<Contrato> GetContratoPorDni(string dni)
 
     return contratos;
 }
+public List<Contrato> GetContratoPorEmail(string email)
+{
+    List<Contrato> contratos = new List<Contrato>();
 
+    using (var connection = new MySqlConnection(ConnectionString))
+    {
+        var sql = @"
+        SELECT 
+            c.id_contrato,
+            c.Precio, 
+            i.Nombre, 
+            i.Apellido, 
+            i.Dni,
+            inm.Direccion,
+            inm.Precio AS PrecioInmueble
+        FROM Contrato c
+        JOIN Inquilino i ON i.id_inquilino = c.id_inquilino
+        JOIN Inmueble inm ON inm.id_inmueble = c.id_inmueble
+        WHERE i.Email = @Email";
+        
+        using (var command = new MySqlCommand(sql, connection))
+        {
+            command.Parameters.AddWithValue("@Email", email);
+
+            connection.Open();
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                   var contrato = new Contrato
+                    {
+                        id_contrato = reader.GetInt32("id_contrato"),
+                        Precio = reader.GetDecimal("Precio"),
+                        inquilino = new Inquilino
+                        {
+                            Nombre = reader.GetString("Nombre"),
+                            Apellido = reader.GetString("Apellido"),
+                            Dni = reader.GetString("Dni")
+                        },
+                        inmueble = new Inmueble
+                        {
+                            Direccion = reader.GetString("Direccion"),
+                            Precio = reader.GetDecimal("PrecioInmueble")
+                        }
+                    };
+                    contratos.Add(contrato);
+                }
+            }
+        }
+    }
+
+    return contratos;
+}
 /*
     public void EliminarContrato(int id)
     {

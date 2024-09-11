@@ -1,6 +1,7 @@
 using Inmobiliaria_Cerutti.UsuarioController;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MySql.Data.MySqlClient;
 using Org.BouncyCastle.Asn1.Iana;
 namespace Inmobiliaria_Cerutti.PagoController;
 
@@ -37,11 +38,27 @@ public class PagoController : Controller
         }
         else
         {
-            TempData["Error"] = "Error: Dni no registrado";
+            TempData["Error"] = "Error: No hay contratos registrados";
             return View("buscar");
         }
     }
 
+ public IActionResult buscarEmail(string email)
+    {
+        var rc = new RepositorioContrato();
+        var contratos = rc.GetContratoPorEmail(email);
+
+        if (contratos != null && contratos.Any()) // Verificamos si la lista tiene elementos
+        {
+            ViewBag.Contratos = contratos; // Pasamos los contratos a la vista usando ViewBag
+            return View("Pagar");
+        }
+        else
+        {
+            TempData["Error"] = "Error: No hay contratos registrados";
+            return View("buscar");
+        }
+    }
 
 
     public IActionResult Pagar(int id_contrato)
@@ -63,7 +80,7 @@ public class PagoController : Controller
             TempData["mensaje"] = "Pago realizado con éxito.";
             return RedirectToAction("Index");
         }
-        catch (Exception ex)
+        catch (MySqlException ex)
         {
             TempData["error"] = $"Error al realizar el pago: {ex.Message}";
             return View(pago);
