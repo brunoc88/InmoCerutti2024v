@@ -1,3 +1,8 @@
+Los estados de las entidades estan por default en 1 en la base de datos
+cuando se realice el alta de cualquiera de ellas.
+
+
+
 LEFT JOIN: Se utiliza para incluir todos los inmuebles, 
 incluso aquellos que no tienen contratos asociados. 
 Esto es útil porque queremos listar todos los inmuebles que estén disponibles,
@@ -15,3 +20,7 @@ tuve que forsar el input de avar en el formulario de crear porque no me dejaba m
 de esta forma podia crear un usuario sin la oblicagion de elegir un avar.
 por el tema de las jquery validations usando data-val="false" en el input
 lo mismo tuve que hacer en el de edit para no tener que escribir la clave(por si queria conservarla)
+
+se uso el atributo min="@DateTime.Now.ToString("yyyy-MM-dd")" en el input de fecha de contrato y pago
+esto permite que el usuario pongas fechas pasadas a la hora de buscar inmuebles disponibles y realizar pagos
+<input asp-for="FechaDePago" class="form-control" type="date" id="fp" min="@DateTime.Now.ToString("yyyy-MM-dd")" />

@@ -1,0 +1,39 @@
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - My Application</title>
+
+    <!-- Incluir Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+
+@if (TempData["mensaje"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["mensaje"]
+    </div>
+}
+
+@if (TempData["error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["error"]
+    </div>
+}
+
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="buscarDni">
+            <div class="form-group">
+                <label>Ingresar Dni:</label>
+                <input type="text" class="form-control" id="dni" name="dni">
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </div>
+        </form>
+    </div>
+</div>

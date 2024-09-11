@@ -9,7 +9,7 @@ public class RepositorioUsuario()
     public void CrearUsuario(Usuario usuario)
     {
         using (var connection = new MySqlConnection(ConnectionString))
-        {  // Insertar nuevo usuario
+        {  
             string query = "INSERT INTO usuarios (Nombre, Apellido, Email, Clave, Salt, Rol, AvatarUrl) VALUES (@Nombre, @Apellido, @Email, @Clave, @Salt, @Rol, @AvatarUrl)";
             using (var command = new MySqlCommand(query, connection))
             {
@@ -155,11 +155,10 @@ public Usuario GetUsuarioById(int id)
                         Apellido = reader.GetString("Apellido"),
                         Email = reader.GetString("Email"),
                         Clave = reader.GetString("Clave"),
-                        // Manejo de posibles valores NULL para AvatarUrl
                         AvatarUrl = reader.IsDBNull(reader.GetOrdinal("AvatarUrl")) ? null : reader.GetString("AvatarUrl"),
                         Salt = reader.GetString("Salt"),
                         Rol = reader.GetString("Rol"),
-                        Estado = reader.GetBoolean("Estado") // Asegúrate de leer el campo Estado si es parte del modelo
+                        Estado = reader.GetBoolean("Estado") 
                     };
                 }
             }

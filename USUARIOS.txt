@@ -1,0 +1,9 @@
+Usuarios:
+
+Role: Administrador
+Mail: bruno@gmail.com
+clave: 123
+
+Role: Empleado
+Mail: belen@gmail.com
+clave: 123

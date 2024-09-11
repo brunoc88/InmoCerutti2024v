@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using MySql.Data.MySqlClient;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Inmobiliaria_Cerutti.UsuarioController;
 
@@ -121,6 +122,7 @@ public class HomeController : Controller
         rng.GetBytes(saltBytes);
         return Convert.ToBase64String(saltBytes);
     }
+    [Authorize]
     public IActionResult Perfil()
     {
         // Obtengo el email del usuario autenticado desde los claims
@@ -138,6 +140,7 @@ public class HomeController : Controller
         return View(usuario);
     }
 
+    [Authorize]
     public IActionResult Editar(int id)
     {
         var ru = new RepositorioUsuario();
@@ -146,7 +149,7 @@ public class HomeController : Controller
     }
 
     // Acción POST para actualizar el usuario admin
-
+    [Authorize]
     [HttpPost]
     public IActionResult Editar(Usuario usuario, bool eliminarAvatar)
     {
