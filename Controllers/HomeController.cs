@@ -140,106 +140,119 @@ public class HomeController : Controller
         return View(usuario);
     }
 
-    [Authorize]
-    public IActionResult Editar(int id)
+   
+ [Authorize]
+public IActionResult Editar(int id)
+{
+    var ru = new RepositorioUsuario();
+    var usuarioExistente = ru.GetUsuarioById(id);
+
+    // Obtener el usuario autenticado
+    var email = User.FindFirst(ClaimTypes.Email)?.Value;
+    var usuarioAutenticado = ru.GetUsuarioByEmail(email);
+
+    // Si el usuario autenticado no es administrador y no es el mismo usuario, denegar acceso
+    if (usuarioAutenticado == null || (usuarioAutenticado.Rol != "Administrador" && usuarioAutenticado.Id != id))
+    {
+        TempData["error"] = "No tienes permiso para editar este perfil.";
+        return RedirectToAction("Perfil");
+    }
+
+    // Asegurar que el rol no sea modificado
+    usuarioExistente.Rol = usuarioAutenticado.Rol;
+
+    return View(usuarioExistente);
+}
+
+
+[Authorize]
+[HttpPost]
+public IActionResult Editar(Usuario usuario, bool eliminarAvatar)
+{
+    try
     {
         var ru = new RepositorioUsuario();
-        var usuario = ru.GetUsuarioById(id);
-        return View(usuario);
-    }
+        var usuarioAutenticado = ru.GetUsuarioByEmail(User.FindFirst(ClaimTypes.Email)?.Value);
 
-    // Acción POST para actualizar el usuario admin
-    [Authorize]
-    [HttpPost]
-    public IActionResult Editar(Usuario usuario, bool eliminarAvatar)
-    {
-        try
+        // Verificar si el usuario autenticado puede modificar este perfil
+        if (usuarioAutenticado == null || (usuarioAutenticado.Rol != "Administrador" && usuarioAutenticado.Id != usuario.Id))
         {
-            var ru = new RepositorioUsuario();
-            var usuarioExistente = ru.GetUsuarioById(usuario.Id);
-
-            // Manejar el archivo del avatar si se sube uno nuevo
-            if (usuario.AvatarFile != null && usuario.AvatarFile.Length > 0)
-            {
-                // Ruta de la carpeta de avatares
-                var avatarsPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "avatars");
-
-                // Creo la carpeta avatars si no existe
-                if (!Directory.Exists(avatarsPath))
-                {
-                    Directory.CreateDirectory(avatarsPath);
-                }
-
-                // Genero un nombre único para el archivo del avatar
-                var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(usuario.AvatarFile.FileName);
-
-                // Ruta completa donde se guardará el archivo
-                var filePath = Path.Combine(avatarsPath, uniqueFileName);
-
-                // Guardo el archivo
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    usuario.AvatarFile.CopyTo(stream);
-                }
-
-                // Guardo la ruta del nuevo avatar en la base de datos
-                usuario.AvatarUrl = "/avatars/" + uniqueFileName;
-            }
-            else if (eliminarAvatar && !string.IsNullOrEmpty(usuarioExistente.AvatarUrl))
-            {
-                // Si se debe eliminar el avatar existente
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", usuarioExistente.AvatarUrl.TrimStart('/'));
-
-                // Eliminar el archivo del servidor
-                if (System.IO.File.Exists(filePath))
-                {
-                    System.IO.File.Delete(filePath);
-                }
-
-                // Limpiar la URL del avatar en la base de datos
-                usuario.AvatarUrl = "";
-            }
-            else
-            {
-                // Mantener el avatar existente si no se elimina ni cambia
-                usuario.AvatarUrl = usuarioExistente.AvatarUrl;
-            }
-
-            // Generar Salt y hashear la contraseña si se proporciona una nueva
-            if (!string.IsNullOrEmpty(usuario.Clave))
-            {
-                usuario.Salt = GenerateSalt();
-                usuario.Clave = HashPassword(usuario.Clave, usuario.Salt);
-            }
-            else
-            {
-                // Mantener la contraseña y el salt existente si no se proporciona una nueva
-                usuario.Clave = usuarioExistente.Clave;
-                usuario.Salt = usuarioExistente.Salt;
-            }
-
-            ru.EditarUsuario(usuario);
-            if(usuario.Email != usuarioExistente.Email){
-                TempData["mensaje"] = "Email modificado, intente ingresar!";
-                return View(nameof(Login));
-            }
-            TempData["mensaje"] = "Usuario modificado con éxito!";
-
+            TempData["error"] = "No tienes permiso para modificar este perfil.";
             return RedirectToAction("Perfil");
         }
-        catch (MySqlException ex) when (ex.Number == 1062)
+
+        // Obtener los datos del usuario actual de la base de datos
+        var usuarioExistente = ru.GetUsuarioById(usuario.Id);
+
+        // Manejar el avatar
+        if (usuario.AvatarFile != null && usuario.AvatarFile.Length > 0)
         {
-            TempData["error"] = "Error: El mail elegido ya está en uso, cambie el mail.";
-            return View(usuario);
+            var avatarsPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "avatars");
+
+            if (!Directory.Exists(avatarsPath))
+            {
+                Directory.CreateDirectory(avatarsPath);
+            }
+
+            var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(usuario.AvatarFile.FileName);
+            var filePath = Path.Combine(avatarsPath, uniqueFileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                usuario.AvatarFile.CopyTo(stream);
+            }
+
+            // Actualizar la URL del avatar
+            usuario.AvatarUrl = "/avatars/" + uniqueFileName;
         }
-        catch (Exception ex)
+        else if (eliminarAvatar && !string.IsNullOrEmpty(usuarioExistente.AvatarUrl))
         {
-            TempData["error"] = "Error al modificar el usuario: " + ex.Message;
-            return View(usuario);
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", usuarioExistente.AvatarUrl.TrimStart('/'));
+
+            if (System.IO.File.Exists(filePath))
+            {
+                System.IO.File.Delete(filePath);
+            }
+
+            usuario.AvatarUrl = ""; // Dejar al usuario sin avatar
         }
+        else
+        {
+            usuario.AvatarUrl = usuarioExistente.AvatarUrl; // Mantener el avatar existente si no se elimina ni cambia
+        }
+
+        // Si se proporciona una nueva contraseña, hashearla
+        if (!string.IsNullOrEmpty(usuario.Clave))
+        {
+            usuario.Salt = GenerateSalt();
+            usuario.Clave = HashPassword(usuario.Clave, usuario.Salt);
+        }
+        else
+        {
+            usuario.Clave = usuarioExistente.Clave; // Mantener la contraseña actual
+            usuario.Salt = usuarioExistente.Salt;   // Mantener el salt actual
+        }
+
+        // El rol no debe cambiar, mantener el rol original
+        usuario.Rol = usuarioExistente.Rol;
+
+        // Actualizar el usuario
+        ru.EditarUsuario(usuario);
+
+        TempData["mensaje"] = "Perfil actualizado con éxito!";
+        return RedirectToAction("Perfil");
     }
-
-
+    catch (MySqlException ex) when (ex.Number == 1062)
+    {
+        TempData["error"] = "Error: El mail elegido ya está en uso, cambie el mail.";
+        return View(usuario);
+    }
+    catch (Exception ex)
+    {
+        TempData["error"] = "Error al modificar el perfil: " + ex.Message;
+        return View(usuario);
+    }
+}
 }
 
 internal class RNGCryptoServiceProvider
