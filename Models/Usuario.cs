@@ -16,7 +16,7 @@ public class Usuario
     public bool Estado {get;set;}= true; // seteo en 1 de entrada al crear
 
      public string Salt { get; set; }
- 
+
 
 }
 

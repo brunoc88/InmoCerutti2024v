@@ -1,0 +1,64 @@
+
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - My Application</title>
+
+    <!-- Incluir Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+
+
+@model IEnumerable<TipoInmueble>;
+@if (TempData["mensaje"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["mensaje"]
+    </div>
+}
+
+@if (TempData["error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["error"]
+    </div>
+}
+
+<div>
+    <h2>Tipos de Inmueble Creados</h2>
+    <h4>
+        <a asp-action="Alta" class="btn btn-success btn-sm">
+            <i class="fas fa-plus"></i> Crear Tipo de Inmueble
+        </a>
+    </h4>
+    <table class="table table-sm">
+        <thead>
+            <tr>
+                <th scope="col" style="width: 5%;">#</th>
+                <th scope="col" style="width: 70%;">Tipo Inmueble</th>
+                <th scope="col" style="width: 25%;">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.id_tipoInmueble</td>
+                    <td>@item.tipoNombre</td>
+                    <td>
+                        <a asp-action="Alta" asp-route-id="@item.id_tipoInmueble" class="btn btn-primary btn-sm">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
+                        <a asp-action="Eliminar" asp-route-id="@item.id_tipoInmueble" class="btn btn-danger btn-sm"
+                            onclick="return confirm('¿Está seguro que desea eliminar el tipo de Inmueble @item.tipoNombre?');">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

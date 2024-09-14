@@ -18,20 +18,23 @@
 
 @model Filtro;
 
+@{
+    var ltaTipoInmuebles = (List<TipoInmueble>)ViewBag.TipoInmueble;
+}
 <div class="row">
     <div class="col-md-4">
 
 <form method="post" asp-action="Listado">
         <div class="form-group">
         <label for="Tipo">Tipo</label>
-        <select asp-for="Tipo" class="form-control">
-            <option value="">Seleccionar Tipo</option>
-            <option value="Local">Local</option>
-            <option value="Deposito">Deposito</option>
-            <option value="Casa">Casa</option>
-            <option value="Departamento">Departamento</option>
-            <option value="Otro">Otro</option>
-        </select>
+        <select class="form-control" asp-for="Tipo">
+    <option value="">Seleccione un tipo de inmueble</option>
+    @foreach (var tipo in ltaTipoInmuebles)
+    {
+        <option value="@tipo.id_tipoInmueble">@tipo.tipoNombre</option>
+    }
+</select>
+
     </div>
 
     <div class="form-group">

@@ -78,7 +78,7 @@
         </tr>
         <tr>
             <th>Tipo</th>
-            <td>@Model.inmueble.Tipo</td>
+            <td>@Model.inmueble.Tipo.tipoNombre</td>
         </tr>
         <tr>
             <th>Cantidad de Ambientes</th>
@@ -95,6 +95,16 @@
         <tr>
             <th>Precio del Inmueble</th>
             <td>@Model.inmueble.Precio.ToString("C")</td>
+        </tr>
+    </table>
+    <h3>Contrato Realizado por:</h3>
+    <table class="table">
+        <tr>
+            <th>Empleado
+                <td>
+                   @Model.usuario.Nombre @Model.usuario.Apellido 
+                </td>
+            </th>
         </tr>
     </table>
 

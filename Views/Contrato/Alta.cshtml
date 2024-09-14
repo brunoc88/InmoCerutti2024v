@@ -3,6 +3,7 @@
 @{
     var inmueble = ViewBag.Inmueble as Inmueble;
     var inquilinos = ViewBag.Inquilinos as List<Inquilino>;
+    var usuario = ViewBag.Usuario as List<Usuario>;
 }
 
 <h2>Crear Contrato</h2>
@@ -55,7 +56,7 @@
         <input asp-for="Precio" class="form-control" type="number" step="any" />
         <span asp-validation-for="Precio" class="text-danger"></span>
     </div>
-
+   
     <div class="form-group">
         <input type="submit" value="Guardar" class="btn btn-primary" />
     </div>

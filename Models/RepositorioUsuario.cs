@@ -26,39 +26,39 @@ public class RepositorioUsuario()
         }
     }
 
+public Usuario GetUsuarioByEmail(string email)
+{
+    Usuario usuario = null;
 
-    public Usuario GetUsuarioByEmail(string email)
+    using (var connection = new MySqlConnection(ConnectionString))
     {
-        Usuario usuario = null;
-
-        using (var connection = new MySqlConnection(ConnectionString))
+        var sql = "SELECT * FROM usuarios WHERE Email = @Email AND Estado = 1";
+        using (var command = new MySqlCommand(sql, connection))
         {
-            var sql = "SELECT * FROM usuarios WHERE Email = @Email AND Estado = 1";
-            using (var command = new MySqlCommand(sql, connection))
+            connection.Open();
+            command.Parameters.AddWithValue("@Email", email);
+            var reader = command.ExecuteReader();
+            if (reader.Read())
             {
-                connection.Open();
-                command.Parameters.AddWithValue("@Email", email);
-                var reader = command.ExecuteReader();
-                if (reader.Read())
+                usuario = new Usuario
                 {
-                    usuario = new Usuario
-                    {
-                        Id = reader.GetInt32("Id"),
-                        Nombre = reader.GetString("Nombre"),
-                        Apellido = reader.GetString("Apellido"),
-                        Email = reader.GetString("Email"),
-                        Clave = reader.GetString("Clave"),
-                        Salt = reader.GetString("Salt"),
-                        Rol = reader.GetString("Rol"),
-                        Estado = reader.GetBoolean("Estado"),
-                        AvatarUrl = reader.GetString("AvatarUrl")
-                    };
-                }
+                    Id = reader.GetInt32("Id"),
+                    Nombre = reader.GetString("Nombre"),
+                    Apellido = reader.GetString("Apellido"),
+                    Email = reader.GetString("Email"),
+                    Clave = reader.GetString("Clave"),
+                    Salt = reader.GetString("Salt"),
+                    Rol = reader.GetString("Rol"),
+                    Estado = reader.GetBoolean("Estado"),
+                    AvatarUrl = reader.GetString("AvatarUrl")
+                };
             }
         }
-
-        return usuario;
     }
+
+    return usuario;
+}
+
 
     public List<Usuario> GetUsuarios()
     {

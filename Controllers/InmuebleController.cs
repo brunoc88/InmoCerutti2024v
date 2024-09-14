@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Inmobiliaria_Cerutti.Models;
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Authorization;
+using MySql.Data.MySqlClient;
 
 namespace Inmobiliaria_Cerutti.InmuebleController;
 
@@ -31,6 +32,9 @@ public class InmuebleController : Controller
         {
             var rp = new RepositorioPropietario();
             ViewBag.Propietarios = rp.GetPropietarios();//obtengo los propietario y se los paso a la vista
+            
+            var rt = new RepositorioTipoInmueble();
+            ViewBag.TipoInmuebles = rt.GetTipoInmuebles();
             return View();
         }
         catch (Exception ex)
@@ -43,20 +47,27 @@ public class InmuebleController : Controller
 
     [HttpPost]
     public IActionResult Guardar(Inmueble inmueble)
+{
+    try
     {
-        try
-        {
-            var ri = new RepositorioInmueble();
-            ri.AltaInmueble(inmueble);
-            TempData["mensaje"] = "Inmueble guardado con éxito!";
-            return RedirectToAction(nameof(Index));
-        }
-        catch (Exception ex)
-        {
-            TempData["error"] = "Error: al agregar el inmueble.";
-            return RedirectToAction(nameof(Crear));
-        }
+        var ri = new RepositorioInmueble();
+        ri.AltaInmueble(inmueble);
+        TempData["mensaje"] = "Inmueble guardado con éxito!";
+        return RedirectToAction(nameof(Index));
     }
+    catch (MySqlException ex) when (ex.Number == 1062)
+    {
+        // Error de duplicado
+        TempData["error"] = "Error: Ya existe un Inmueble en esa dirección.";
+        return RedirectToAction(nameof(Crear));
+    }
+    catch (Exception ex)
+    {
+        // Otros errores
+        TempData["error"] = "Error: Debe seleccionar tipo de inmueble.";
+        return RedirectToAction(nameof(Crear));
+    }
+}
 
 
     [Authorize(Roles = "Administrador")]
@@ -85,6 +96,8 @@ public class InmuebleController : Controller
         var inmueble = ri.GetInmueble(id);
         var rp = new RepositorioPropietario();
         ViewBag.Propietarios = rp.GetPropietarios();
+        var rt = new RepositorioTipoInmueble();
+        ViewBag.TipoInmuebles = rt.GetTipoInmuebles();
         return View(inmueble);
     }
     // POST: Inmueble/Edit/

@@ -13,7 +13,11 @@ public class Inmueble
     public string Uso { get; set; }
 
     [Required(ErrorMessage = "Debe Ingresar el tipo de Inmueble.")]
-    public string Tipo { get; set; }
+    
+    public int id_tipoInmueble {get;set;}
+    [ForeignKey(nameof(id_tipoInmueble))]
+    [Required(ErrorMessage = "Debe Ingresar el tipo de Inmueble.")]
+    public TipoInmueble Tipo { get; set; }
 
     [Required(ErrorMessage = "Debe detallar la cantidad de ambientes.")]
     public int Ambientes { get; set; }

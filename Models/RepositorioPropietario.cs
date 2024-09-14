@@ -46,7 +46,9 @@ public class RepositorioPropietario
                         {nameof(Propietario.Dni)},
                         {nameof(Propietario.Telefono)}
                        
-					FROM propietario WHERE Estado = 1";
+					FROM propietario WHERE Estado = 1"+
+                    $" ORDER BY {nameof(Propietario.id_propietario)} ASC";
+                    ;
             //tambien si quiere mostrar todo hago SELECT * FROM inquilino
             using (var comand = new MySqlCommand(sql, conexion))
             {

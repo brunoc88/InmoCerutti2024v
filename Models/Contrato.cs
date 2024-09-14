@@ -19,4 +19,9 @@ public class Contrato
     [Required(ErrorMessage = "Debe Agregar Fecha de Finalizacion.")]
     public DateTime FechaFin { get; set; }
     public bool estado {get;set;}
+
+      // Relación con Usuario
+    public int id_usuario { get; set; }
+    [ForeignKey(nameof(id_usuario))]
+    public Usuario usuario { get; set; }
 }

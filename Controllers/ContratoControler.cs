@@ -4,6 +4,7 @@ using Org.BouncyCastle.Asn1.Pkcs;
 using MySql.Data.MySqlClient;
 using Mysqlx;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Inmobiliaria_Cerutti.ContratoController;
 
@@ -28,6 +29,9 @@ public class ContratoController : Controller
 
     public IActionResult Buscar()
     {
+        var rt = new RepositorioTipoInmueble();
+        var tipos = rt.GetTipoInmuebles();
+        ViewBag.TipoInmueble = tipos;
         return View();
     }
 
@@ -49,32 +53,45 @@ public class ContratoController : Controller
 }
 
 
-    public IActionResult alta(int id)
+public IActionResult Alta(int id)
+{
+    var repoInmueble = new RepositorioInmueble();
+    var inmueble = repoInmueble.GetInmueble(id);
+
+    var repoInquilino = new RepositorioInquilino();
+    var inquilinos = repoInquilino.GetInquilinos();
+   
+    // Obtener el usuario autenticado
+    var ru = new RepositorioUsuario();
+    var usuarioAutenticado = ru.GetUsuarioByEmail(User.FindFirst(ClaimTypes.Email)?.Value);
+
+    ViewBag.Inmueble = inmueble;
+    ViewBag.Inquilinos = inquilinos;
+    ViewBag.Usuario = usuarioAutenticado; 
+
+    var contrato = new Contrato
     {
-        var repoInmueble = new RepositorioInmueble();
-        var inmueble = repoInmueble.GetInmueble(id);
+        id_inmueble = inmueble.id_inmueble,
+       
+    };
 
-        var repoInquilino = new RepositorioInquilino();
-        var inquilinos = repoInquilino.GetInquilinos();
+    return View(contrato);
+}
 
-        ViewBag.Inmueble = inmueble;
-        ViewBag.Inquilinos = inquilinos;
 
-        var contrato = new Contrato
-        {
-            id_inmueble = inmueble.id_inmueble,
-            
-        };
+[HttpPost]
+public IActionResult Alta(Contrato contrato)
+{
+    // Asignar el id_usuario desde el usuario autenticado
+    var usuarioAutenticado = new RepositorioUsuario().GetUsuarioByEmail(User.FindFirst(ClaimTypes.Email)?.Value);
+    contrato.id_usuario = usuarioAutenticado.Id;
 
-        return View(contrato);
-    }
+    var rc = new RepositorioContrato();
+    rc.CrearContrato(contrato);
 
-    [HttpPost]
-    public IActionResult alta(Contrato contrato){
-        var rc = new RepositorioContrato();
-        rc.CrearContrato(contrato);
-        return RedirectToAction(nameof(Index));
-    }
+    return RedirectToAction(nameof(Index));
+}
+
 
     [Authorize(Roles = "Administrador")]
     public IActionResult Eliminar(int id){
@@ -102,4 +119,8 @@ public class ContratoController : Controller
         var contrato = rc.GetContrato(id);
         return View(contrato);
     }
+
+    
+
+
 }

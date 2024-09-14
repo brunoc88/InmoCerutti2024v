@@ -2,7 +2,24 @@
 
 @{
     ViewData["Title"] = "Editar";
+
+
+
     var ltaPropietarios = (List<Propietario>)ViewBag.Propietarios;
+
+
+
+    var ltaTipoInmuebles = (List<TipoInmueble>)ViewBag.TipoInmuebles;
+}
+
+@if (TempData["Error"] != null)
+
+
+
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
 }
 
 <head>
@@ -15,6 +32,7 @@
 
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
+
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Editar">
@@ -24,48 +42,49 @@
                 <span asp-validation-for="Direccion" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-        <label for="Tipo">Tipo</label>
-        <select asp-for="Tipo" class="form-control">
-            <option value="">Seleccionar Tipo</option>
-            <option value="Local">Local</option>
-            <option value="Deposito">Deposito</option>
-            <option value="Casa">Casa</option>
-            <option value="Departamento">Departamento</option>
-            <option value="Otro">Otro</option>
-        </select>
-    </div>
-
     <div class="form-group">
-        <label for="Uso">Uso</label>
-        <select asp-for="Uso" class="form-control">
-            <option value="">Seleccionar Uso</option>
-            <option value="Comercial">Comercial</option>
-            <option value="Residencial">Residencial</option>
-        </select>
-    </div>
+    <label asp-for="id_tipoInmueble">Tipo de Inmueble</label>
+    <select asp-for="id_tipoInmueble" class="form-control">
+        <option value="">Seleccione un tipo de inmueble</option>
+        @foreach (var tipo in ltaTipoInmuebles)
+        {
+            <option value="@tipo.id_tipoInmueble">
+                @tipo.tipoNombre
+            </option>
+        }
+    </select>
+    <span asp-validation-for="id_tipoInmueble" class="text-danger"></span>
+</div>
+            <div class="form-group">
+                <label asp-for="Uso">Uso</label>
+                <select asp-for="Uso" class="form-control">
+                    <option value="">Seleccionar Uso</option>
+                    <option value="Comercial">Comercial</option>
+                    <option value="Residencial">Residencial</option>
+                </select>
+            </div>
 
             <div class="form-group">
                 <label asp-for="Ambientes"></label>
-                <input asp-for="Ambientes" class="form-control" />
+                <input asp-for="Ambientes" class="form-control" type="number" />
                 <span asp-validation-for="Ambientes" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="Latitud"></label>
-                <input asp-for="Latitud" class="form-control" type="number" step="any"/>
+                <input asp-for="Latitud" class="form-control" type="number" step="any" />
                 <span asp-validation-for="Latitud" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="Longitud"></label>
-                <input asp-for="Longitud" class="form-control" type="number" step="any"/>
+                <input asp-for="Longitud" class="form-control" type="number" step="any" />
                 <span asp-validation-for="Longitud" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="Precio"></label>
-                <input asp-for="Precio" class="form-control" type="number" step="any"/>
+                <input asp-for="Precio" class="form-control" type="number" step="any" />
                 <span asp-validation-for="Precio" class="text-danger"></span>
             </div>
 
@@ -73,6 +92,7 @@
                 <label class="control-label">Propietario</label>
                 <select class="form-control" name="id_propietario">
                     @foreach (var item in ltaPropietarios)
+
                     {
                         <option value="@item.id_propietario">@item.Apellido @item.Nombre (@item.Dni)</option>
                     }
