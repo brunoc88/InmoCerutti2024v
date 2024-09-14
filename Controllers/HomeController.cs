@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using MySql.Data.MySqlClient;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Cryptography;
 
 namespace Inmobiliaria_Cerutti.UsuarioController;
 
@@ -115,13 +116,7 @@ public class HomeController : Controller
     }
 
 
-    private static string GenerateSalt(int size = 32)
-    {
-        var rng = new RNGCryptoServiceProvider();
-        var saltBytes = new byte[size];
-        rng.GetBytes(saltBytes);
-        return Convert.ToBase64String(saltBytes);
-    }
+   
 [Authorize]
 [Authorize]
 public IActionResult Perfil()
@@ -173,7 +168,7 @@ public IActionResult Editar(int id)
 
 [Authorize]
 [HttpPost]
-public async Task<IActionResult> Editar(Usuario usuario, bool eliminarAvatar, string nuevaClave, string confirmarClave)
+public async Task<IActionResult> Editar(Usuario usuario, bool eliminarAvatar)
 {
     try
     {
@@ -227,25 +222,11 @@ public async Task<IActionResult> Editar(Usuario usuario, bool eliminarAvatar, st
             usuario.AvatarUrl = usuarioExistente.AvatarUrl; // Mantener el avatar existente si no se elimina ni cambia
         }
 
-        // Manejar la actualización de la contraseña
-        if (!string.IsNullOrEmpty(nuevaClave) && nuevaClave == confirmarClave)
-        {
-            // Verificar la contraseña actual
-            var hashedCurrentPassword = HashPassword(usuario.Clave, usuarioExistente.Salt);
-            if (hashedCurrentPassword != usuarioExistente.Clave)
-            {
-                TempData["error"] = "La contraseña actual es incorrecta.";
-                return View(usuario);
-            }
-
-            // Hash de la nueva contraseña
+        
+        
+        if(usuario.Clave != usuarioExistente.Clave){
             usuario.Salt = GenerateSalt();
-            usuario.Clave = HashPassword(nuevaClave, usuario.Salt);
-        }
-        else if (!string.IsNullOrEmpty(nuevaClave) || !string.IsNullOrEmpty(confirmarClave))
-        {
-            TempData["error"] = "Las contraseñas no coinciden o están vacías.";
-            return View(usuario);
+            usuario.Clave = HashPassword(usuario.Clave, usuario.Salt);
         }
         else
         {
@@ -282,16 +263,15 @@ public async Task<IActionResult> Editar(Usuario usuario, bool eliminarAvatar, st
     }
 }
 
-
-
-internal class RNGCryptoServiceProvider
+private static string GenerateSalt(int size = 32)
 {
-    public RNGCryptoServiceProvider()
+    using (var rng = RandomNumberGenerator.Create()) // Usa RandomNumberGenerator
     {
+        var saltBytes = new byte[size];
+        rng.GetBytes(saltBytes);
+        return Convert.ToBase64String(saltBytes);
     }
+}
 
-    internal void GetBytes(byte[] saltBytes)
-    {
-        throw new NotImplementedException();
-    }
-}}
+
+}
