@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-09-2024 a las 01:09:13
+-- Tiempo de generación: 14-09-2024 a las 19:02:33
 -- Versión del servidor: 10.4.25-MariaDB
 -- Versión de PHP: 8.1.10
 
@@ -43,13 +43,9 @@ CREATE TABLE `contrato` (
 --
 
 INSERT INTO `contrato` (`id_contrato`, `id_inmueble`, `id_inquilino`, `precio`, `FechaInicio`, `FechaFin`, `Estado`, `id_usuario`) VALUES
-(23, 45, 32, '18.00', '2024-09-13 00:00:00', '2024-10-18 00:00:00', 1, 27),
-(24, 46, 23, '12.00', '2024-09-13 23:14:45', '2024-09-13 23:14:45', 0, 28),
-(25, 48, 32, '10.00', '2024-09-13 00:00:00', '2024-10-03 00:00:00', 1, 28),
-(26, 47, 26, '12.00', '2024-09-13 00:00:00', '2024-09-28 00:00:00', 1, 27),
-(27, 50, 29, '193.00', '2024-09-20 00:00:00', '2024-09-19 00:00:00', 1, 27),
-(28, 51, 25, '22.00', '2024-09-13 00:00:00', '2024-09-21 00:00:00', 1, 27),
-(29, 52, 21, '12.00', '2024-09-13 00:00:00', '2024-09-21 00:00:00', 1, 27);
+(34, 68, 35, '104.00', '2024-09-14 00:00:00', '2024-10-14 00:00:00', 1, 28),
+(35, 70, 34, '222.00', '2024-09-14 00:00:00', '2024-10-11 00:00:00', 1, 27),
+(36, 72, 34, '100.00', '2024-09-14 00:00:00', '2024-11-14 00:00:00', 1, 27);
 
 -- --------------------------------------------------------
 
@@ -75,13 +71,11 @@ CREATE TABLE `inmueble` (
 --
 
 INSERT INTO `inmueble` (`id_inmueble`, `Direccion`, `Uso`, `Ambientes`, `Latitud`, `Longitud`, `Precio`, `id_propietario`, `Estado`, `id_tipoInmueble`) VALUES
-(45, 'Chacabuco 828', 'Residencial', 3, '45.000000', '33.000000', '222.00', 12, 1, 23),
-(46, 'lamadrid', 'Comercial', 10, '45.000000', '33.000000', '222.00', 11, 0, 2),
-(47, 'Peru 21', 'Comercial', 2, '21.000000', '21.000000', '101.00', 12, 1, 1),
-(48, 'Entre rio 222', 'Comercial', 3, '21.000000', '33.000000', '100.00', 18, 1, 22),
-(50, 'LaMadrid 44', 'Comercial', 3, '3.000000', '3.000000', '1109.00', 12, 1, 3),
-(51, 'Belgrano 82', 'Residencial', 3, '21.000000', '33.000000', '100.00', 12, 1, 3),
-(52, 'Sarmiento 91', 'Residencial', 2, '21.000000', '33.000000', '100.00', 12, 1, 22);
+(68, 'Montevideo 33', 'Residencial', 1, '12.000000', '22.000000', '102.00', 20, 1, 32),
+(69, 'Asuncion 33', 'Residencial', 3, '21.000000', '33.000000', '222.00', 21, 1, 32),
+(70, 'Lima 13', 'Residencial', 3, '21.000000', '33.000000', '222.00', 22, 1, 34),
+(71, 'Madrid 77', 'Residencial', 4, '21.000000', '33.000000', '222.00', 22, 1, 34),
+(72, 'Caracas', 'Comercial', 2, '21.000000', '33.000000', '100.00', 20, 1, 39);
 
 -- --------------------------------------------------------
 
@@ -104,19 +98,10 @@ CREATE TABLE `inquilino` (
 --
 
 INSERT INTO `inquilino` (`id_inquilino`, `Nombre`, `Apellido`, `Dni`, `Email`, `Telefono`, `Estado`) VALUES
-(1, 'Alberto', 'cerutti', '3333', 'bruno@gmail.com', '123213', 0),
-(19, 'Juan Gabriel Francisco', 'García Flores', '555', 'ejemplo@ejemplo.mx', '5553428400', 0),
-(21, 'tomas ', 'shelby', '33333', 's@gmail.com', '5555', 1),
-(22, 'pepe', 'Gomez', '1231231', 'alfonpepe@gmail.com', '08000', 1),
-(23, 'Sofía', 'Martínez', '56789012', 'sofia.martinez@example.com', '567890123', 1),
-(24, 'Pedro', 'García', '67890123', 'pedro.garcia@example.com', '678901234', 1),
-(25, 'Lucía', 'Hernández', '78901234', 'lucia.hernandez@example.com', '789012345', 1),
-(26, 'Diego', 'Suárez', '89012345', 'diego.suarez@example.com', '890123456', 0),
-(27, 'Elena', 'Méndez', '90123456', 'elena.mendez@example.com', '901234567', 1),
-(28, 'Manuel', 'fox', '010101', 'mqd@gmail.com', '25433', 0),
-(29, 'Carlos', 'Sainz', '020202020', 'sainz@gmail.com', '123456778', 1),
-(30, 'Soledad', 'Silveira', '000', 'ssilveira@gmail.com', '1231', 0),
-(32, 'Jose Antonio', 'Lopez Hernandez Garcia', '66661', 'Hernandez12@gmail.com', '08002222', 0);
+(34, 'Jose Ramon', 'Lopez', '111', 'josera@gmail.com', '0101', 1),
+(35, 'Maria Angeles', 'Gomez Bolanio', '2020', 'mariag12@gmail.com', '20202', 1),
+(36, 'Juan Gabriel', 'Osorio', '414', 'juanga@gmail.com', '3030', 1),
+(37, 'Raquel', 'Godoy', '555', 'raquelgodoy@gmail.com', '4040', 1);
 
 -- --------------------------------------------------------
 
@@ -138,9 +123,10 @@ CREATE TABLE `pago` (
 --
 
 INSERT INTO `pago` (`id_pago`, `FechaDePago`, `Motivo`, `Importe`, `id_contrato`, `Estado`) VALUES
-(29, '2024-09-21', '\"alquiler\"', '222.00', 23, 1),
-(30, '2024-09-19', '\"alquiler\"', '222.00', 23, 1),
-(31, '2024-09-21', '\"alquiler\"', '222.00', 25, 1);
+(40, '2024-09-14', '\"alquiler\"', '222.00', 34, 1),
+(41, '2024-09-14', '\"alquiler\"', '222.00', 35, 1),
+(42, '2024-09-14', '\"alquiler\"', '222.00', 36, 1),
+(43, '2024-10-14', '\"Pago\"', '222.00', 35, 1);
 
 -- --------------------------------------------------------
 
@@ -163,16 +149,9 @@ CREATE TABLE `propietario` (
 --
 
 INSERT INTO `propietario` (`id_propietario`, `Nombre`, `Apellido`, `Dni`, `Email`, `telefono`, `Estado`) VALUES
-(1, 'Alberto', 'cerutti', '1231231', 'bruno@gmail.com', '123213', 0),
-(10, 'Gottfried', 'Leibniz', '22222222', 'test@beispiel.de', '030303986300', 0),
-(11, 'Juan Gabriel', 'Pérez ', '12345678', 'juan.perez@example.com', '123456789', 0),
-(12, 'María Luz', 'González', '87654321', 'maria.gonzalez@example.com', '987654321', 1),
-(13, 'Carlos', 'Ramírez', '23456789', 'carlos.ramirez@example.com', '234567890', 1),
-(14, 'Ana', 'López', '34567890', 'ana.lopez@example.com', '345678901', 1),
-(15, 'Luis', 'Fernández', '45678901', 'luis.fernandez@example.com', '456789012', 0),
-(16, 'Manuel', 'Hernandez Garcia', '666555', 'hernandez@gmail.com', '080099', 0),
-(17, 'Jose Pedro', 'Gonzales', '1411414', 'josesito@gmail.com', '013', 1),
-(18, 'Pedro', 'Marmol', '0120102012', 'pedrito@gmail.com', '5642', 1);
+(20, 'Antonio', 'Torres', '777', 'antonytorres@gmail.com', '5050', 1),
+(21, 'Ana Maria', 'Costanzo', '3939', 'constanzoana@gmail.com', '5656', 1),
+(22, 'Pedro', 'Hernandez', '3838', 'pepehernandez@gmail.com', '6060', 1);
 
 -- --------------------------------------------------------
 
@@ -191,12 +170,12 @@ CREATE TABLE `tipoinmueble` (
 --
 
 INSERT INTO `tipoinmueble` (`id_tipoInmueble`, `tipoNombre`, `Estado`) VALUES
-(1, 'Galpon', 1),
-(2, 'Motel', 0),
-(3, 'Hotel', 1),
-(22, 'Casa', 1),
-(23, 'Departamento', 1),
-(24, 'Otro...', 1);
+(32, 'Departamento', 1),
+(34, 'Casa', 1),
+(35, 'Otro...', 1),
+(36, 'Hotel', 1),
+(38, 'Deposito', 1),
+(39, 'Local', 1);
 
 -- --------------------------------------------------------
 
@@ -221,8 +200,8 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`Id`, `Nombre`, `Apellido`, `Email`, `Clave`, `AvatarUrl`, `Rol`, `Estado`, `Salt`) VALUES
-(27, 'Bruno ', 'Cerutti ', 'bruno@gmail.com', '5b2WEUbpgLiQYT8p9iXIZGGh///G8aDj9KS/1dUiDWE=', '/avatars/0a3f0a42-eb91-4510-bd98-f92d0977d7d0_profile1.png', 'Administrador', 1, 'PexnprQ/8INRqtwsj7xNZ6IJMLzQ2zbbcjk+DSty0Sg='),
-(28, 'Belen', 'Rosas', 'belen@gmail.com', '6pzzo5qB03uQINtkSmaQteR0KFCVjPjMpY87U4A1z1k=', '/avatars/9e9b2144-19fc-4632-a58a-2f35aeded6ac_panda.png', 'Empleado', 1, 'ZKc92yRYvid31T1IJzgf159UqrviYQ4+rvAOv2QmcrY=');
+(27, 'Bruno ', 'Cerutti ', 'bruno@gmail.com', 'iVKjbYMxRZvOVIft4Gx3dVA1LFJLWh9gcYKDCUvUxg8=', '/avatars/33d418ca-86f1-450b-8ed1-b9c1109eafa0_profile1.png', 'Administrador', 1, 'hd02krrPtn9VYDMFNRQDKurH1CXVbxrZtww6S+noYvQ='),
+(28, 'Belen ', 'Rosas ', 'belen@gmail.com', 'f3KHA8D3/qhWrA/d1VzB2LkpTNI1I3cFgkqyFs0UHJA=', '/avatars/7c45e777-696d-4a43-a9f2-294077bc4128_panda.png', 'Empleado', 1, 'bJr5k9Wz7zWXZq+6LEoMLwhmLbJbcWe/ddQU2LeOOS4=');
 
 --
 -- Índices para tablas volcadas
@@ -242,6 +221,7 @@ ALTER TABLE `contrato`
 --
 ALTER TABLE `inmueble`
   ADD PRIMARY KEY (`id_inmueble`),
+  ADD UNIQUE KEY `Direccion_2` (`Direccion`),
   ADD KEY `id_propietario` (`id_propietario`),
   ADD KEY `FK_Inmueble_TipoInmueble` (`id_tipoInmueble`);
 
@@ -292,43 +272,43 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `contrato`
 --
 ALTER TABLE `contrato`
-  MODIFY `id_contrato` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id_contrato` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT de la tabla `inmueble`
 --
 ALTER TABLE `inmueble`
-  MODIFY `id_inmueble` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `id_inmueble` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- AUTO_INCREMENT de la tabla `inquilino`
 --
 ALTER TABLE `inquilino`
-  MODIFY `id_inquilino` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id_inquilino` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT de la tabla `pago`
 --
 ALTER TABLE `pago`
-  MODIFY `id_pago` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id_pago` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT de la tabla `propietario`
 --
 ALTER TABLE `propietario`
-  MODIFY `id_propietario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id_propietario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT de la tabla `tipoinmueble`
 --
 ALTER TABLE `tipoinmueble`
-  MODIFY `id_tipoInmueble` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id_tipoInmueble` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- Restricciones para tablas volcadas

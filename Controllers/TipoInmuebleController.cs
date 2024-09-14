@@ -56,7 +56,7 @@ public class TipoInmuebleController : Controller
                 TempData["Mensaje"] = "Tipo de inmueble Modificado!";
                 return RedirectToAction("Index");
             }catch(MySqlException){
-                TempData["Error"] = "Se produjo un Error al Modificar!";
+                TempData["Error"] = "Ya existe!";
                 return View();
             }
         }
