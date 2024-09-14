@@ -26,3 +26,7 @@ esto permite que el usuario pongas fechas pasadas a la hora de buscar inmuebles 
 <input asp-for="FechaDePago" class="form-control" type="date" id="fp" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
 
 Tuve que poner el metodo .any() porque por mas que puse controles de excepciones me devolvian null las listas.
+
+En algunas consultas tuve que usar alias para evitar problemas de mapeo!
+
+al usuario cuando quiera modificar su perfil va a tener que solicitarle su contrasenia!.
