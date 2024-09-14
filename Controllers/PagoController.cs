@@ -35,12 +35,16 @@ public class PagoController : Controller
         {
             ViewBag.Contratos = contratos; // Pasamos los contratos a la vista usando ViewBag
             return View("Pagar");
+        }else if(dni == null){
+            TempData["Error"] = "Error: Ingrese un Dni!";
+            return View("buscar");
         }
         else
         {
             TempData["Error"] = "Error: No hay contratos registrados";
             return View("buscar");
         }
+        
     }
 
  public IActionResult buscarEmail(string email)
@@ -52,6 +56,9 @@ public class PagoController : Controller
         {
             ViewBag.Contratos = contratos; // Pasamos los contratos a la vista usando ViewBag
             return View("Pagar");
+        }else if(email == null){
+            TempData["Error"] = "Error: Ingrese un Email!";
+            return View("buscar");
         }
         else
         {
