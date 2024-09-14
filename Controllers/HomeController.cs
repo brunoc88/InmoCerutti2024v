@@ -159,7 +159,7 @@ public IActionResult Editar(int id)
     // Si el usuario autenticado no es administrador y no es el mismo usuario, denegar acceso
     if (usuarioAutenticado == null || (usuarioAutenticado.Rol != "Administrador" && usuarioAutenticado.Id != id))
     {
-        TempData["error"] = "No tienes permiso para editar este perfil.";
+       
         return RedirectToAction("Perfil");
     }
 
