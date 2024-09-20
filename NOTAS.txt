@@ -30,3 +30,5 @@ Tuve que poner el metodo .any() porque por mas que puse controles de excepciones
 En algunas consultas tuve que usar alias para evitar problemas de mapeo!
 
 al usuario cuando quiera modificar su perfil va a tener que solicitarle su contrasenia!.
+
+tuve que usar una variable hasChange tipo booleana por el tema que me mandaba el formulario por mas que no cambiara nada.
