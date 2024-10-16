@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 public class Inmueble
 {
+    [Key]//Es necesario para el framework de Entity
     public int id_inmueble { get; set; }
 
     [Required(ErrorMessage = "Debe ingresar una Direccion.")]

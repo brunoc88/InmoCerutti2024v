@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 public class Propietario
 {
+    [Key]
     public int id_propietario { get; set; }
     [Required(ErrorMessage = "El nombre es obligatorio")]
     public string? Nombre { get; set; }
