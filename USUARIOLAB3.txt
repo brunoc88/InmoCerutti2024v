@@ -1,0 +1,23 @@
+  "id_propietario": 28,
+    "nombre": "Bruno",
+    "apellido": "Cerutti",
+    "dni": "33964636",
+    "email": "bruno@gmail.com",
+    "telefono": "123",
+    "estado": false,
+    "clave": "123"
+
+    {
+    "id_propietario": 33,
+    "nombre": "Mariana",
+    "apellido": "cerutti",
+    "dni": "33964637",
+    "email": "mariana@gmail.com",
+    "telefono": "12345",
+    "estado": true,
+    "clave": "6UtILmvTb1OX6nns44NLeq0tKfmJ0jsJ53hmi2h8VUg="
+}
+
+    //pagina para ver los tokens
+
+    https://jwt.io/

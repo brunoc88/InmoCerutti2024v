@@ -16,5 +16,6 @@ public class Propietario
     [Required(ErrorMessage = "El teléfono es obligatorio")]
     public string? Telefono { get; set; }
     public bool estado {get;set;}
+    public string? clave {get;set;}//se adiere por el registro en la app movil
 
 }
