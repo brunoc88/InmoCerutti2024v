@@ -29,33 +29,33 @@ public class PropietarioController : ControllerBase
     }
 
 
-[HttpPost("login")]
-[AllowAnonymous]
-public async Task<IActionResult> Login([FromForm] LoginView loginView)
-{
-    try
+    [HttpPost("login")]
+    [AllowAnonymous]
+    public async Task<IActionResult> Login([FromBody] LoginView loginView)
     {
-        // Hashear la contraseña ingresada
-        string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-            password: loginView.Clave,
-            salt: Encoding.ASCII.GetBytes(config["Salt"]),
-            prf: KeyDerivationPrf.HMACSHA1,
-            iterationCount: 1000,
-            numBytesRequested: 256 / 8));
-
-        // Buscar al propietario por email
-        var propietario = await contexto.Propietario.FirstOrDefaultAsync(x => x.Email == loginView.Email);
-
-        // Verificar si el propietario existe y si la contraseña es correcta
-        if (propietario == null || propietario.clave != hashed)
+        try
         {
-            return BadRequest("Nombre de usuario o clave incorrecta");
-        }
-        string mail = propietario.Email;
-        string nombre = propietario.Nombre + " " + propietario.Apellido;
-        logger.LogInformation("Email del usuario: {Email}", mail); //
-        // Crear los claims para el token JWT
-        var claims = new List<Claim>
+            // Hashear la contraseña ingresada
+            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: loginView.Clave,
+                salt: Encoding.ASCII.GetBytes(config["Salt"]),
+                prf: KeyDerivationPrf.HMACSHA1,
+                iterationCount: 1000,
+                numBytesRequested: 256 / 8));
+
+            // Buscar al propietario por email
+            var propietario = await contexto.Propietario.FirstOrDefaultAsync(x => x.Email == loginView.Email);
+
+            // Verificar si el propietario existe y si la contraseña es correcta
+            if (propietario == null || propietario.clave != hashed)
+            {
+                return BadRequest("Nombre de usuario o clave incorrecta");
+            }
+            string mail = propietario.Email;
+            string nombre = propietario.Nombre + " " + propietario.Apellido;
+            logger.LogInformation("Email del usuario: {Email}", mail); //
+                                                                       // Crear los claims para el token JWT
+            var claims = new List<Claim>
 {
     new Claim(ClaimTypes.Name, mail), // Cambiar de ClaimTypes.Email a ClaimTypes.Name
     new Claim("FullName", nombre),
@@ -63,32 +63,32 @@ public async Task<IActionResult> Login([FromForm] LoginView loginView)
 };
 
 
-        // Generar el token JWT
-        var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(config["TokenAuthentication:SecretKey"]));
-        var credenciales = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-        var token = new JwtSecurityToken(
-            issuer: config["TokenAuthentication:Issuer"],
-            audience: config["TokenAuthentication:Audience"],
-            claims: claims,
-            expires: DateTime.Now.AddMinutes(60), // Token válido por 60 minutos
-            signingCredentials: credenciales
-        );
+            // Generar el token JWT
+            var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(config["TokenAuthentication:SecretKey"]));
+            var credenciales = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var token = new JwtSecurityToken(
+                issuer: config["TokenAuthentication:Issuer"],
+                audience: config["TokenAuthentication:Audience"],
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(60), // Token válido por 60 minutos
+                signingCredentials: credenciales
+            );
 
-        // Devolver el token
-        return Ok(new JwtSecurityTokenHandler().WriteToken(token));
+            // Devolver el token
+            return Ok(new JwtSecurityTokenHandler().WriteToken(token));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
-    catch (Exception ex)
-    {
-        return BadRequest(ex.Message);
-    }
-}
 
 
     //crear Propietario
     // POST api/Propietario
     [AllowAnonymous]
     [HttpPost]
-    public async Task<IActionResult> Post([FromForm] Propietario entidad)
+    public async Task<IActionResult> Post([FromBody] Propietario entidad)
     {
         try
         {
@@ -127,6 +127,7 @@ public async Task<IActionResult> Login([FromForm] LoginView loginView)
 
     // GET api/Propietario/perfil
     [HttpGet("perfil")]
+    [Authorize]//es el token para que no de 401
     public IActionResult perfil()
     {
         logger.LogInformation("llamaste a perfil!"); //
@@ -135,7 +136,7 @@ public async Task<IActionResult> Login([FromForm] LoginView loginView)
         {
             // Obtener el email del usuario a partir del token JWT
             var email = User.Identity?.Name;
-            
+
             // Registrar el valor del email en la consola
             logger.LogInformation("Email del usuario: {Email}", email); //
 
@@ -161,6 +162,7 @@ public async Task<IActionResult> Login([FromForm] LoginView loginView)
                 propietario.Email,
                 propietario.Dni,
                 propietario.Telefono,
+                propietario.clave
             });
         }
         catch (Exception ex)
@@ -169,6 +171,38 @@ public async Task<IActionResult> Login([FromForm] LoginView loginView)
         }
     }
 
+// PUT api/Propietario
+[HttpPut]
+[Authorize]
+public async Task<IActionResult> Put([FromBody] Propietario p)
+{
+    try
+    {
+        if (ModelState.IsValid)
+        {
+            var propietario = await contexto.Propietario.AsNoTracking().FirstOrDefaultAsync(x => x.Email == p.Email);
+            if (propietario != null)
+            {
+                propietario.Nombre = p.Nombre;
+                propietario.Apellido = p.Apellido;
+                propietario.Dni = p.Dni;
+                propietario.Email = p.Email;
+                propietario.Telefono = p.Telefono;
+
+                contexto.Propietario.Update(propietario);
+                await contexto.SaveChangesAsync();
+                
+                return Ok(p);
+            }
+            return NotFound("Propietario no encontrado");
+        }
+        return BadRequest(ModelState);
+    }
+    catch (Exception ex)
+    {
+        return BadRequest(ex.Message);
+    }
+}
 
     public class LoginView
     {
@@ -178,4 +212,7 @@ public async Task<IActionResult> Login([FromForm] LoginView loginView)
         public string Clave { get; set; }
     }
 
+
+
+    
 }
