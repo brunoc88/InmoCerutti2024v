@@ -5,12 +5,14 @@ using System.Reflection.Metadata;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using K4os.Hash.xxHash;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Org.BouncyCastle.Asn1.Iana;
 
 [Route("api/[controller]")]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -171,38 +173,53 @@ public class PropietarioController : ControllerBase
         }
     }
 
-// PUT api/Propietario
-[HttpPut]
-[Authorize]
-public async Task<IActionResult> Put([FromBody] Propietario p)
-{
-    try
+    // PUT api/Propietario
+    [HttpPut]
+    [Authorize]//es el token para que no de 401
+    public async Task<IActionResult> Put([FromBody] Propietario entidad)
     {
-        if (ModelState.IsValid)
+        try
         {
-            var propietario = await contexto.Propietario.AsNoTracking().FirstOrDefaultAsync(x => x.Email == p.Email);
-            if (propietario != null)
+            if (ModelState.IsValid)
             {
-                propietario.Nombre = p.Nombre;
-                propietario.Apellido = p.Apellido;
-                propietario.Dni = p.Dni;
-                propietario.Email = p.Email;
-                propietario.Telefono = p.Telefono;
 
-                contexto.Propietario.Update(propietario);
+                Propietario original = await contexto.Propietario.FindAsync(entidad.id_propietario);
+                if (original == null)
+                {
+                    return NotFound("Propietario no encontrado");
+                }
+
+                // Desvincula la entidad original para evitar el conflicto de rastreo
+                contexto.Entry(original).State = EntityState.Detached;
+
+                // Aquí realiza la lógica de actualización de la clave y otros campos
+                if (String.IsNullOrEmpty(entidad.clave))
+                {
+                    entidad.clave = original.clave;
+                }
+                else
+                {
+                    entidad.clave = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                        password: entidad.clave,
+                        salt: System.Text.Encoding.ASCII.GetBytes(config["Salt"]),
+                        prf: KeyDerivationPrf.HMACSHA1,
+                        iterationCount: 1000,
+                        numBytesRequested: 256 / 8));
+                }
+
+                // Realiza la actualización y guarda los cambios
+                contexto.Propietario.Update(entidad);
                 await contexto.SaveChangesAsync();
-                
-                return Ok(p);
+                return Ok(entidad);
+
             }
-            return NotFound("Propietario no encontrado");
+            return BadRequest();
         }
-        return BadRequest(ModelState);
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
-    catch (Exception ex)
-    {
-        return BadRequest(ex.Message);
-    }
-}
 
     public class LoginView
     {
@@ -214,5 +231,5 @@ public async Task<IActionResult> Put([FromBody] Propietario p)
 
 
 
-    
+
 }
